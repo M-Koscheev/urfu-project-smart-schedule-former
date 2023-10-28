@@ -1,1 +1,1 @@
-# pohui_potom_pereimenue
+# urfu-project-smart-shedule-former
