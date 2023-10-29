@@ -1,1 +1,1 @@
-# urfu-project-smart-shedule-former
+# urfu-project-smart-sсhedule-former
