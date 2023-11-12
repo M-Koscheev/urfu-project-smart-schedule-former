@@ -1,14 +1,9 @@
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS competencies;
-
-
-CREATE TABLE IF NOT EXISTS competencies (
-    id SERIAL PRIMARY KEY,
-    title VARCHAR NOT NULL,
-    knowledge varchar
+CREATE TABLE IF NOT EXISTS tblCompetencies (
+    PK_Title TEXT PRIMARY KEY,
+    knowledge tblknowledge[] DISTINCT
 );
 
-INSERT INTO competencies(title, knowledge)
+INSERT INTO tblCompetencies(PK_Title, knowledge)
 VALUES
 ('Система контроля версий', 'Git, GitHub, GitLab, Bitbucket, Bazaar, CVS, Mercurial, Perforce, SourceForge, SVN'),
 ('Реляционные базы данных', 'SQL, MySQL, MariaDB, Amazon Aurora, Microsoft SQL Server, MS SQL, Oracle, PostgreSQL, SAP HANA, SQLite, T-SQL, Teradata'),
@@ -110,8 +105,9 @@ VALUES
 ('Сетевые технологии', 'Интернет, интранет, сервер, серверные технологии, сетевые технологии и протоколы, хостинг'),
 ('Алгоритмы и структуры данных', 'Алгоритмизация, бинарный поиск, графы, линейные структуры данных, рекурсивные алгоритмы, хеширование'),
 ('Искусственный интеллект и анализ данных', 'Анализ данных, исследователь данных, кластеризация, математическая статистика, нейронные сети, регрессионный анализ, статистические методы, дискретная математика, обработка и предобработка данных, масштабирование'),
-('Разработка ПО', 'Компилятор, компонентная модель, компьютеризация, копирайтинг, моделирование, отладка, паттерны проектирования, разработка, создание уникального продукта, расширения');
+('Разработка ПО', 'Компилятор, компонентная модель, компьютеризация, копирайтинг, моделирование, отладка, паттерны проектирования, разработка, создание уникального продукта, расширения')
+ON CONFLICT (PK_Title)
+DO UPDATE
+SET PK_Title = excluded.PK_Title;
 
-
-
-SELECT * FROM competencies
+SELECT * FROM tblCompetencies;
