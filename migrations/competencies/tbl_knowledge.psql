@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS tblKnowledge(
+    PK_Knowledge TEXT PRIMARY KEY
+);
+
+INSERT INTO tblknowledge(PK_Knowledge)
+VALUES 
+('Test knowledge'),
+('Test knowledge')
+ON CONFLICT
+DO NOTHING;
+
+SELECT * FROM tblknowledge

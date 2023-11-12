@@ -1,19 +1,21 @@
 package cmd
 
 import (
-	_ "fmt"
-	_ "net/http"
-	_ "time"
+	"fmt"
+	"net/http"
 
+	//"time"
+
+	"github.com/M-Koscheev/urfu-project-smart-schedule-former/internal/database_func"
 	"github.com/M-Koscheev/urfu-project-smart-schedule-former/internal/prof_func"
 )
 
-// func greet(w http.ResponseWriter, r *http.Request) {
-// 	fmt.Fprintf(w, "Hello World! %s", time.Now())
-// }
+func greet(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, database_func.GetKnowledgeList())
+}
 
 func StartApp() {
-	// http.HandleFunc("/", greet)
-	// http.ListenAndServe(":8080", nil)
+	http.HandleFunc("/", greet)
+	http.ListenAndServe(":8080", nil)
 	prof_func.Test()
 }

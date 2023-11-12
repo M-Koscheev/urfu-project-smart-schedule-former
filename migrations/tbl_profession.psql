@@ -1,0 +1,31 @@
+CREATE TABLE IF NOT EXISTS professions (
+    title TEXT PRIMARY KEY,
+    descr TEXT
+);
+
+INSERT INTO professions(title)
+VALUES
+('Аналитик'),
+('Специалист по Data Science & Machine Learning'),
+('Специалист по Machine Learning'),
+('Специалист по Deep Learning'),
+('Дизайнер'),
+('UI/UX специалист'),
+('Графический дизайнер'),
+('Разработчик'),
+('Мобильный разработчик'),
+('Frontend-разработчик'),
+('Backend-разработчик'),
+('DevOPS инженер'),
+('Разработчик микроконтроллеров'),
+('VR-разработчик'),
+('Менеджер и руководитель'),
+('Администратор'),
+('Тестирование'),
+('Gamedev'),
+('Информационная безопасность.')
+ON CONFLICT (title)
+DO UPDATE
+SET descr = excluded.descr;
+
+SELECT * FROM professions;
