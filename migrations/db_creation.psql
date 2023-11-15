@@ -1,0 +1,76 @@
+-- following sql naming convention tables names should be 
+-- in plural form (For example, "users" instead of "user")
+
+-- names of databases, tables, columns, etc should be lower_case_with_underscores
+CREATE TABLE IF NOT EXISTS knowledge ( -- Проработать эту таблицу
+    knowledge_pk TEXT PRIMARY KEY
+);
+
+CREATE TABLE IF NOT EXISTS competencies (
+    title_pk TEXT PRIMARY KEY,
+    knowledge knowledge[], --DISTINCT, -- Узнать как создать set
+    experience TEXT, -- Что подразумевается?
+    skills TEXT -- Что подразумевается?
+);
+
+CREATE TABLE IF NOT EXISTS professions (
+    title_pk TEXT PRIMARY KEY,
+    description TEXT
+);  
+
+CREATE TABLE IF NOT EXISTS projects (
+    title_pk TEXT PRIMARY KEY,
+    description TEXT,
+    result TEXT,
+    life_scenario TEXT,
+    main_technology knowledge
+);
+
+CREATE TABLE IF NOT EXISTS study_groups (
+    -- Что подразумевается?
+);
+
+CREATE TABLE IF NOT EXISTS students (
+    id_pk INT PRIMARY KEY,
+    full_name TEXT,
+    study_group study_groups
+);
+
+CREATE TABLE IF NOT EXISTS portfolios (
+    student students,
+    term SMALLINT,
+    project projects,
+    team students[],
+    purpose TEXT, -- team role. 'role' and 'character' are already sql statements
+    PRIMARY KEY (student, project)
+);
+
+CREATE TABLE IF NOT EXISTS trajectories (
+    student_pk students PRIMARY KEY,
+    term SMALLINT
+    -- course Что подразумевается?
+    -- competency competencies Что подразумевается?
+);
+
+CREATE TABLE IF NOT EXISTS teachers (-- Проработать эту таблицу
+    id_pk INT PRIMARY KEY,
+    full_name TEXT
+);
+
+CREATE TABLE IF NOT EXISTS courses (
+    title_pk TEXT PRIMARY KEY,
+    description TEXT,
+    duration SMALLINT, -- В чем измеряется?
+    teacher teachers -- Добавить таблицу учителей
+);
+
+CREATE TABLE IF NOT EXISTS disciplines (
+    title_pk TEXT PRIMARY KEY,
+    description TEXT
+);
+
+CREATE TABLE IF NOT EXISTS educational_programs (
+    title_pk TEXT PRIMARY KEY,
+    description TEXT
+    -- belonging Что подразумевается?
+);

@@ -1,21 +1,22 @@
 package cmd
 
 import (
-	"fmt"
-	"net/http"
+	"log/slog"
 
-	//"time"
-
-	"github.com/M-Koscheev/urfu-project-smart-schedule-former/internal/database_func"
-	"github.com/M-Koscheev/urfu-project-smart-schedule-former/internal/prof_func"
+	"github.com/M-Koscheev/urfu-project-smart-schedule-former/internal/app"
+	"github.com/M-Koscheev/urfu-project-smart-schedule-former/internal/db"
 )
 
-func greet(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, database_func.GetKnowledgeList())
-}
-
+// cmd - control panel, so there is no program logic here/
 func StartApp() {
-	http.HandleFunc("/", greet)
-	http.ListenAndServe(":8080", nil)
-	prof_func.Test()
+	db, err := db.ConnectToDatabase()
+	if err != nil {
+		slog.Error("unable to connect to the database", err)
+	}
+	defer db.Close()
+
+	service := app.New(db)
+	if err := service.Run(); err != nil {
+		slog.Error("unable to start app", slog.String("err", err.Error()))
+	}
 }
