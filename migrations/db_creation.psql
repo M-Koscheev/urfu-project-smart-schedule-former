@@ -1,16 +1,12 @@
--- following sql naming convention tables names should be 
--- in plural form (For example, "users" instead of "user")
-
--- names of databases, tables, columns, etc should be lower_case_with_underscores
-CREATE TABLE IF NOT EXISTS knowledge ( -- Проработать эту таблицу
+CREATE TABLE IF NOT EXISTS knowledge (
     knowledge_pk TEXT PRIMARY KEY
 );
 
 CREATE TABLE IF NOT EXISTS competencies (
     title_pk TEXT PRIMARY KEY,
-    knowledge knowledge[], --DISTINCT, -- Узнать как создать set
-    experience TEXT, -- Что подразумевается?
-    skills TEXT -- Что подразумевается?
+    knowledge knowledge[],
+    experience TEXT,
+    skills TEXT
 );
 
 CREATE TABLE IF NOT EXISTS professions (
@@ -26,8 +22,23 @@ CREATE TABLE IF NOT EXISTS projects (
     main_technology knowledge
 );
 
+CREATE TABLE IF NOT EXISTS teachers (
+    id_pk INT PRIMARY KEY,
+    full_name TEXT
+);
+
+CREATE TABLE IF NOT EXISTS courses (
+    title_pk TEXT PRIMARY KEY,
+    description TEXT,
+    duration SMALLINT,
+    teacher teachers
+);
+
 CREATE TABLE IF NOT EXISTS study_groups (
-    -- Что подразумевается?
+    student students[],
+    term SMALLINT,
+    title TEXT PRIMARY KEY,
+    course courses
 );
 
 CREATE TABLE IF NOT EXISTS students (
@@ -41,27 +52,15 @@ CREATE TABLE IF NOT EXISTS portfolios (
     term SMALLINT,
     project projects,
     team students[],
-    purpose TEXT, -- team role. 'role' and 'character' are already sql statements
+    team_role TEXT,
     PRIMARY KEY (student, project)
 );
 
 CREATE TABLE IF NOT EXISTS trajectories (
     student_pk students PRIMARY KEY,
     term SMALLINT
-    -- course Что подразумевается?
-    -- competency competencies Что подразумевается?
-);
-
-CREATE TABLE IF NOT EXISTS teachers (-- Проработать эту таблицу
-    id_pk INT PRIMARY KEY,
-    full_name TEXT
-);
-
-CREATE TABLE IF NOT EXISTS courses (
-    title_pk TEXT PRIMARY KEY,
-    description TEXT,
-    duration SMALLINT, -- В чем измеряется?
-    teacher teachers -- Добавить таблицу учителей
+    course courses
+    competency competencies
 );
 
 CREATE TABLE IF NOT EXISTS disciplines (
@@ -72,5 +71,5 @@ CREATE TABLE IF NOT EXISTS disciplines (
 CREATE TABLE IF NOT EXISTS educational_programs (
     title_pk TEXT PRIMARY KEY,
     description TEXT
-    -- belonging Что подразумевается?
+    belonging TEXT
 );
