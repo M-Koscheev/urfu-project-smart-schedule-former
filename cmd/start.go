@@ -9,7 +9,7 @@ import (
 
 // cmd - control panel, so there is no program logic here/
 func StartApp() {
-	db, err := db.ConnectToDatabase()
+	db, err := db.CreateConnection()
 	if err != nil {
 		slog.Error("unable to connect to the database", err)
 	}

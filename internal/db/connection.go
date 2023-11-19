@@ -2,24 +2,36 @@ package db
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
+	"os"
+
+	"github.com/joho/godotenv"
 
 	_ "github.com/lib/pq" // do not delete. Required for connection to the db/
 )
 
-const (
-	host     = "localhost"
-	port     = "5432"
-	user     = "postgres"
-	password = "123678"
-	dbname   = "postgres"
-)
+func CreateConnection() (*sql.DB, error) {
+	if err := godotenv.Load(); err != nil {
+		return nil, errors.New("unable to load .env file")
+	}
 
-func ConnectToDatabase() (*sql.DB, error) {
+	host, okHost := os.LookupEnv("DB_HOST")
+	port, okPort := os.LookupEnv("DB_PORT")
+	user, okUser := os.LookupEnv("DB_USER")
+	password, okPassword := os.LookupEnv("DB_PASSWORD")
+	dbname, okDBName := os.LookupEnv("DB_NAME")
+	if !okHost || !okPort || !okUser || !okPassword || !okDBName {
+		return nil, errors.New("unable to get environment variables")
+	}
+
 	// connection string
 	psqlconn := fmt.Sprintf(`host=%s port=%s user=%s password=%s dbname=%s sslmode=disable`, host, port, user, password, dbname)
 	// open database
-	db, err := sql.Open("postgres", psqlconn)
+	conn, err := sql.Open("postgres", psqlconn)
 
-	return db, err
+	if connErr := conn.Ping(); connErr != nil {
+		return nil, connErr
+	}
+	return conn, err
 }
