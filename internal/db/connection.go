@@ -25,9 +25,7 @@ func CreateConnection() (*sql.DB, error) {
 		return nil, errors.New("unable to get environment variables")
 	}
 
-	// connection string
 	psqlconn := fmt.Sprintf(`host=%s port=%s user=%s password=%s dbname=%s sslmode=disable`, host, port, user, password, dbname)
-	// open database
 	conn, err := sql.Open("postgres", psqlconn)
 
 	if connErr := conn.Ping(); connErr != nil {
