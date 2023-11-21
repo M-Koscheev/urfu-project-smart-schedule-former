@@ -5,6 +5,7 @@ import (
 
 	"github.com/M-Koscheev/urfu-project-smart-schedule-former/internal/app"
 	"github.com/M-Koscheev/urfu-project-smart-schedule-former/internal/db"
+	"github.com/M-Koscheev/urfu-project-smart-schedule-former/internal/rest"
 )
 
 // cmd - control panel, so there is no program logic here/
@@ -16,7 +17,8 @@ func StartApp() {
 	defer db.Close()
 
 	service := app.New(db)
-	if err := service.Run(); err != nil {
+	handler := rest.New(service)
+	if err := handler.Run(); err != nil {
 		slog.Error("unable to start app", slog.String("err", err.Error()))
 	}
 }
