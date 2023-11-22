@@ -2,34 +2,33 @@ package db
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
+	"log/slog"
 	"os"
 
 	"github.com/joho/godotenv"
-
 	_ "github.com/lib/pq" // do not delete. Required for connection to the db/
 )
 
 func CreateConnection() (*sql.DB, error) {
 	if err := godotenv.Load(); err != nil {
-		return nil, errors.New("unable to load .env file")
+		return nil, err
 	}
 
-	host, okHost := os.LookupEnv("DB_HOST")
-	port, okPort := os.LookupEnv("DB_PORT")
-	user, okUser := os.LookupEnv("DB_USER")
-	password, okPassword := os.LookupEnv("DB_PASSWORD")
-	dbname, okDBName := os.LookupEnv("DB_NAME")
-	if !okHost || !okPort || !okUser || !okPassword || !okDBName {
-		return nil, errors.New("unable to get environment variables")
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	dbname := os.Getenv("DB_NAME")
+	if host == "" || port == "" || user == "" || password == "" || dbname == "" {
+		slog.Warn("possible error loading environment variables")
 	}
 
 	psqlconn := fmt.Sprintf(`host=%s port=%s user=%s password=%s dbname=%s sslmode=disable`, host, port, user, password, dbname)
-	conn, err := sql.Open("postgres", psqlconn)
-
-	if connErr := conn.Ping(); connErr != nil {
-		return nil, connErr
+	conn, _ := sql.Open("postgres", psqlconn)
+	if err := conn.Ping(); err != nil {
+		return nil, err
 	}
-	return conn, err
+
+	return conn, nil
 }

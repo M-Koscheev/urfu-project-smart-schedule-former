@@ -2,7 +2,6 @@ package app
 
 import (
 	"database/sql"
-	"fmt"
 )
 
 type App struct {
@@ -14,34 +13,26 @@ func New(db *sql.DB) *App {
 }
 
 func (app *App) AddKnowledge(elem string) error {
-	var contains bool
-
-	errCont := app.db.QueryRow(`SELECT exists (SELECT 1 FROM knowledge WHERE $1 = $2 LIMIT 1)`, "knowledge_pk", elem).Scan(&contains)
-	if contains || (errCont != nil && errCont != sql.ErrNoRows) {
-		return errCont
-	}
-
-	_, errAdd := app.db.Exec(`INSERT INTO knowledge(knowledge_pk) VALUES ($1)`, elem)
-	if errAdd != nil {
-		return errAdd
+	if _, err := app.db.Exec(`INSERT INTO knowledge(knowledge_pk) VALUES ($1) ON CONFLICT DO NOTHING`, elem); err != nil {
+		return err
 	}
 
 	return nil
 }
 
-func (app *App) GetKnowledges() (string, error) {
-	knowledges, errKnow := app.db.Query(`SELECT * FROM knowledge`)
-	if errKnow != nil {
-		return "", errKnow
+func (app *App) GetAllKnowledges() ([]string, error) {
+	sqlKnow, err := app.db.Query(`SELECT knowledge_pk FROM knowledge`)
+	if err != nil {
+		return nil, err
 	}
-	output := ""
+
 	temp := ""
-	for knowledges.Next() {
-		errRes := knowledges.Scan(&temp)
-		if errRes != nil {
-			return output, errRes
+	var strKnow []string
+	for sqlKnow.Next() {
+		if err = sqlKnow.Scan(&temp); err != nil {
+			return nil, err
 		}
-		output += fmt.Sprint(temp, ", ")
+		strKnow = append(strKnow, temp)
 	}
-	return output, nil
+	return strKnow, nil
 }

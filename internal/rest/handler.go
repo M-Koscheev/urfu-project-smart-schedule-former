@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"strings"
 
 	"github.com/M-Koscheev/urfu-project-smart-schedule-former/internal/app"
 )
@@ -17,34 +18,33 @@ func New(app *app.App) *Handler {
 }
 
 func (h *Handler) Run() error {
-	http.HandleFunc("/", h.greet)
-	err := http.ListenAndServe(":8080", nil)
-	return err
+	http.HandleFunc("/knowledge", h.knowledge)
+	return http.ListenAndServe(":8080", nil)
 }
 
-func (h *Handler) greet(w http.ResponseWriter, r *http.Request) {
-	value := "15"
+func (h *Handler) knowledge(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		tableTitle := r.URL.Query().Get("table")
-		fmt.Println(tableTitle)
-		if tableTitle == "knowledge" {
-			data, err := h.app.GetKnowledges()
-			fmt.Println(data)
-			if err != nil {
-				slog.Error("Error getting data from knowledge table", err)
-			}
-			http.ServeFile(w, r, data)
-			w.Write([]byte(data))
-		}
-		return
-	case http.MethodPut:
-		err := h.app.AddKnowledge(value)
+		data, err := h.app.GetAllKnowledges()
 		if err != nil {
-			slog.Error(fmt.Sprintf("error adding element %v to the knowledge table", value), err)
+			slog.Error("Error getting data from knowledge table", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			w.Write([]byte(strings.Join(data, " ")))
+			w.WriteHeader(http.StatusOK)
 		}
-		return
+	case http.MethodPost:
+		reqData := r.URL.Query()
+		addData := reqData.Get("knowledge")
+		err := h.app.AddKnowledge(addData)
+		if err != nil {
+			slog.Error(fmt.Sprintf("error adding element %v to the knowledge table", addData), err)
+			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			w.WriteHeader(http.StatusCreated)
+		}
 	default:
-		slog.Error("Now such method implemented yet", w, http.StatusMethodNotAllowed)
+		slog.Warn("Now such method implemented yet", w, http.StatusMethodNotAllowed)
+		w.WriteHeader(http.StatusNotImplemented)
 	}
 }
