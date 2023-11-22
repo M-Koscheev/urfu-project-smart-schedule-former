@@ -25,8 +25,10 @@ func CreateConnection() (*sql.DB, error) {
 	}
 
 	psqlconn := fmt.Sprintf(`host=%s port=%s user=%s password=%s dbname=%s sslmode=disable`, host, port, user, password, dbname)
-	conn, _ := sql.Open("postgres", psqlconn)
-	if err := conn.Ping(); err != nil {
+	conn, err := sql.Open("postgres", psqlconn)
+	if err != nil {
+		return nil, err
+	} else if err = conn.Ping(); err != nil {
 		return nil, err
 	}
 
