@@ -9,6 +9,8 @@ import (
 	"github.com/M-Koscheev/urfu-project-smart-schedule-former/internal/app"
 )
 
+const QueryKeyKnowledge = "knowledge"
+
 type Handler struct {
 	app *app.App
 }
@@ -29,20 +31,20 @@ func (h *Handler) knowledge(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			slog.Error("Error getting data from knowledge table", err)
 			w.WriteHeader(http.StatusInternalServerError)
-		} else {
-			w.Write([]byte(strings.Join(data, " ")))
-			w.WriteHeader(http.StatusOK)
+			return
 		}
+		w.Write([]byte(strings.Join(data, " ")))
+		w.WriteHeader(http.StatusOK)
 	case http.MethodPost:
 		reqData := r.URL.Query()
-		addData := reqData.Get("knowledge")
+		addData := reqData.Get(QueryKeyKnowledge)
 		err := h.app.AddKnowledge(addData)
 		if err != nil {
 			slog.Error(fmt.Sprintf("error adding element %v to the knowledge table", addData), err)
 			w.WriteHeader(http.StatusInternalServerError)
-		} else {
-			w.WriteHeader(http.StatusCreated)
+			return
 		}
+		w.WriteHeader(http.StatusOK)
 	default:
 		slog.Warn("Now such method implemented yet", w, http.StatusMethodNotAllowed)
 		w.WriteHeader(http.StatusNotImplemented)
