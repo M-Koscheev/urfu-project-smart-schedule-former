@@ -18,7 +18,7 @@ func StartApp() {
 
 	service := app.New(db)
 	handler := rest.New(service)
-	if err := handler.Run(); err != nil {
-		slog.Error("unable to start app", slog.String("err", err.Error()))
+	if err = handler.Run(); err != nil {
+		slog.Error("an error occurred during the execution of the program", err)
 	}
 }
