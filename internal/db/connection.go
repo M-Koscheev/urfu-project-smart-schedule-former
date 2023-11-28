@@ -8,6 +8,7 @@ import (
 
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq" // do not delete. Required for connection to the db/
+	"github.com/pressly/goose"
 )
 
 func CreateConnection() (*sql.DB, error) {
@@ -31,6 +32,12 @@ func CreateConnection() (*sql.DB, error) {
 	} else if err = conn.Ping(); err != nil {
 		return nil, err
 	}
+
+	goose.SetDialect("postgres")
+	if err = goose.Up(conn, "migrations/"); err != nil {
+		return nil, err
+	}
+	slog.Info("database connection was created")
 
 	return conn, nil
 }
