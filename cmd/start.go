@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"log/slog"
+	"net/http"
 
 	"github.com/M-Koscheev/urfu-project-smart-schedule-former/internal/app"
 	"github.com/M-Koscheev/urfu-project-smart-schedule-former/internal/db"
@@ -18,7 +19,7 @@ func StartApp() {
 
 	service := app.New(db)
 	handler := rest.New(service)
-	if err = handler.Run(); err != nil {
+	if err = http.ListenAndServe(":8080", handler.Router); err != nil {
 		slog.Error("an error occurred during the execution of the program", err)
 	}
 }
