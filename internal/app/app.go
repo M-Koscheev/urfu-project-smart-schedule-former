@@ -373,31 +373,35 @@ func (app *App) GetTrajectoryById(trajectoryId uuid.UUID) (model.GetTrajectoryRe
 	return resp, nil
 }
 
-func (app *App) PostKnowledge(knowledge string) (uuid.UUID, error) {
+func (app *App) PostKnowledge(knowledge string) (model.GetKnowledgeResponse, error) {
+	var resp model.GetKnowledgeResponse
 	if knowledge == "" {
-		return uuid.Nil, errors.New("empty title")
+		return resp, errors.New("empty title")
 	}
 
-	knowledgeId := uuid.Nil
-	knowledgeData := app.db.QueryRow(`INSERT INTO knowledge (title) VALUES ($1) RETURNING knowledge_id`, knowledge)
-	if err := knowledgeData.Scan(&knowledgeId); err != nil {
-		return uuid.Nil, err
+	resp.Id = uuid.Nil
+	resp.Title = knowledge
+	knowledgeData := app.db.QueryRow(`INSERT INTO knowledge (title) VALUES ($1) ON CONFLICT (title) DO UPDATE SET title = excluded.title RETURNING knowledge_id`, knowledge)
+	if err := knowledgeData.Scan(&resp.Id); err != nil {
+		return resp, err
 	}
 
-	return knowledgeId, nil
+	return resp, nil
 }
 
-func (app *App) PostTechnology(technology string) (uuid.UUID, error) {
+func (app *App) PostTechnology(technology string) (model.GetTechnologyResponse, error) {
+	var resp model.GetTechnologyResponse
 	if technology == "" {
-		return uuid.Nil, errors.New("empty title")
+		return resp, errors.New("empty title")
 	}
 
-	technologyId := uuid.Nil
-	technologyData := app.db.QueryRow(`INSERT INTO technology (title) VALUES ($1) RETURNING technology_id`, technology)
-	if err := technologyData.Scan(&technologyId); err != nil {
-		return uuid.Nil, err
+	resp.Id = uuid.Nil
+	resp.Title = technology
+	technologyData := app.db.QueryRow(`INSERT INTO technology (title) VALUES ($1) ON CONFLICT (title) DO UPDATE SET title = excluded.title RETURNING technology_id `, technology)
+	if err := technologyData.Scan(&resp.Id); err != nil {
+		return resp, err
 	}
-	return technologyId, nil
+	return resp, nil
 }
 
 // func (app *App) PostCompetency(comptency string, skills string, technologyId uuid.UUID, technology string) error {
