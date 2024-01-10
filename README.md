@@ -26,3 +26,8 @@ PostgreSQL used as the database management system.
 Here you can see scheme of database created for this project:
 ![image](https://github.com/M-Koscheev/urfu-project-smart-schedule-former/assets/84404811/481005ce-baec-4e45-95b1-26f2eed2e4b4)
 
+6. Swagger documentation
+
+```swaggo/swag```
+![image](https://github.com/M-Koscheev/urfu-project-smart-schedule-former/assets/84404811/cf788bf1-244e-4759-8f96-b907ac0603f5)
+
