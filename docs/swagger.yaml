@@ -1,0 +1,539 @@
+definitions:
+  model.GetCompetencyResponse:
+    properties:
+      competencyId:
+        type: string
+      competencyKnowledge:
+        items:
+          type: string
+        type: array
+      competencyMainTechnology:
+        type: string
+      competencySkills:
+        type: string
+      competencyTitle:
+        type: string
+    type: object
+  model.GetCourseResponse:
+    properties:
+      courseCompetencies:
+        items:
+          type: string
+        type: array
+      courseDescription:
+        type: string
+      courseDiscipline:
+        type: string
+      courseId:
+        type: string
+      courseTeacher:
+        type: string
+      courseTitle:
+        type: string
+    type: object
+  model.GetDisciplineResponse:
+    properties:
+      disciplineDescription:
+        type: string
+      disciplineEducationalProgram:
+        type: string
+      disciplineId:
+        type: string
+      disciplineTitle:
+        type: string
+    type: object
+  model.GetEducationalProgramResponse:
+    properties:
+      educationalProgramDexcription:
+        type: string
+      educationalProgramId:
+        type: string
+      educationalProgramOrganization:
+        type: string
+      educationalProgramTitle:
+        type: string
+    type: object
+  model.GetKnowledgeResponse:
+    properties:
+      knowledgeId:
+        type: string
+      knowledgeTitle:
+        type: string
+    type: object
+  model.GetOrganizationResponse:
+    properties:
+      organizationId:
+        type: string
+      organizationTitle:
+        type: string
+    type: object
+  model.GetPersonalProjectResponse:
+    properties:
+      personalProjectCompetencies:
+        items:
+          type: string
+        type: array
+      personalProjectDescription:
+        type: string
+      personalProjectLifeScenarion:
+        type: string
+      personalProjectMainTechnology:
+        type: string
+      personalProjectResult:
+        type: string
+      personalProjectSemester:
+        type: string
+      personalProjectTeamRole:
+        type: string
+      personalProjectTitle:
+        description: Id             uuid.UUID `json:"personalProjectId,omitempty"`
+        type: string
+    type: object
+  model.GetPortfolioResponse:
+    properties:
+      portfolioId:
+        type: string
+      portfolioProjects:
+        items:
+          $ref: '#/definitions/model.GetPersonalProjectResponse'
+        type: array
+    type: object
+  model.GetProfessionResponse:
+    properties:
+      professionCompetencies:
+        items:
+          type: string
+        type: array
+      professionDescription:
+        type: string
+      professionId:
+        type: string
+      professionTitle:
+        type: string
+    type: object
+  model.GetProjectResponse:
+    properties:
+      projectDescription:
+        type: string
+      projectId:
+        type: string
+      projectLifeScenarion:
+        type: string
+      projectMainTechnology:
+        type: string
+      projectResult:
+        type: string
+      projectTitle:
+        type: string
+    type: object
+  model.GetStudentResponse:
+    properties:
+      studentFullName:
+        type: string
+      studentId:
+        type: string
+      studentPortfolio:
+        allOf:
+        - $ref: '#/definitions/model.GetPortfolioResponse'
+        description: Admition  time.Time            `json:"studentAdmitionDate"`
+      studentSemester:
+        type: integer
+    type: object
+  model.GetTechnologyResponse:
+    properties:
+      technologyId:
+        type: string
+      technologyTitle:
+        type: string
+    type: object
+  model.GetTrajectoryResponse:
+    properties:
+      trajectoryCourse:
+        type: string
+      trajectoryId:
+        type: string
+      trajectorySemester:
+        type: integer
+      trajectoryStudent:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/competency/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get single competency by ID
+      parameters:
+      - description: Competency ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetCompetencyResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Show competency
+      tags:
+      - competency
+  /api/v1/course/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get single course by ID
+      parameters:
+      - description: Course ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetCourseResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Show course
+      tags:
+      - course
+  /api/v1/discipline/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get single discipline by ID
+      parameters:
+      - description: Discipline ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetDisciplineResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Show discipline
+      tags:
+      - discipline
+  /api/v1/educationalProgram/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get single educational program by ID
+      parameters:
+      - description: Educational program ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetEducationalProgramResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Show educational program
+      tags:
+      - educational program
+  /api/v1/knowledge/:
+    post:
+      consumes:
+      - application/json
+      description: post single knowledge (or check if it is already exists)
+      parameters:
+      - description: Knowledge title
+        in: body
+        name: knowledgeTitle
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetKnowledgeResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Post knowledge
+      tags:
+      - knowledge
+  /api/v1/knowledge/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get single knowledge by ID
+      parameters:
+      - description: Knowledge ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetKnowledgeResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Show knowledge
+      tags:
+      - knowledge
+  /api/v1/organization/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get single organization by ID
+      parameters:
+      - description: Organization ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetOrganizationResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Show organization
+      tags:
+      - project
+  /api/v1/portfolio/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get single portfolio by ID
+      parameters:
+      - description: Portfolio ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetPortfolioResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Show portfolio
+      tags:
+      - portfolio
+  /api/v1/profession/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get single profession by ID
+      parameters:
+      - description: Profession ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetProfessionResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Show profession
+      tags:
+      - profession
+  /api/v1/project/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get single project by ID
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetProjectResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Show project
+      tags:
+      - project
+  /api/v1/student/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get single student by ID
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetStudentResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Show student
+      tags:
+      - student
+  /api/v1/technology/:
+    post:
+      consumes:
+      - application/json
+      description: post single technology (or check if it is already exists)
+      parameters:
+      - description: Technology title
+        in: body
+        name: technologyTitle
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetTechnologyResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Post technology
+      tags:
+      - technology
+  /api/v1/technology/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get single technology by ID
+      parameters:
+      - description: Technology ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetTechnologyResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Show technology
+      tags:
+      - technology
+  /api/v1/trajectory/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get single trajectory by ID
+      parameters:
+      - description: Trajectory ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetTrajectoryResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Show trajectory
+      tags:
+      - trajectory
+swagger: "2.0"
