@@ -105,3 +105,11 @@ type GetTrajectoryResponse struct {
 	Semester uint8     `json:"trajectorySemester"`
 	Course   string    `json:"trajectoryCourse"`
 }
+
+type PostKnowledgeRequest struct {
+	Title string `json:"knowledgeTitle"`
+}
+
+type PostTechnologyRequest struct {
+	Title string `json:"technologyTitle"`
+}
