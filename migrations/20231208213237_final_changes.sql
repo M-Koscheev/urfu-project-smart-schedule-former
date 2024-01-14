@@ -4,30 +4,6 @@ SELECT 'up SQL query';
 -- +goose StatementEnd
 
 CREATE EXTENSION "uuid-ossp";
--- CREATE EXTENSION "pgcrypto";
-
--- DROP TABLE trajectories;
--- DROP TABLE students;
--- -- DROP TABLE project_portfolio_competencies;
--- DROP TABLE project_portfolio;
--- DROP TABLE portfolios;
--- -- DROP TABLE organizations;
--- DROP TABLE projects;
--- DROP TABLE competency_profession;
--- DROP TABLE knowledge_competency;
--- -- DROP TABLE technologies;
--- DROP TABLE study_groups;
--- DROP TABLE courses;
--- DROP TABLE disciplines;
--- DROP TABLE educational_programs;
-
--- DROP TABLE knowledge_competence;
--- DROP TABLE competence_profession;
-
-
--- DROP TABLE professions;
--- DROP TABLE competencies;
--- DROP TABLE knowledge;
 
 CREATE TABLE knowledge ( -- Знания (составляющая часть компетенций) (есть в таблице, состявляемой аналитиками)
     knowledge_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -41,7 +17,7 @@ CREATE TABLE technologies ( -- Ключевые технологии
 
 CREATE TABLE competencies ( -- Компетенции (есть в таблице, состявляемой аналитиками)
     competency_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    title VARCHAR NOT NULL,
+    title VARCHAR NOT NULL UNIQUE,
     skills VARCHAR,
     main_technology_id UUID REFERENCES technologies(technology_id) ON DELETE CASCADE ON UPDATE CASCADE DEFAULT uuid_nil()
 );
@@ -54,7 +30,7 @@ CREATE TABLE knowledge_competency ( -- Связь между компетенц�
 
 CREATE TABLE professions ( -- Список доступных для выбора профессий.
     profession_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    title VARCHAR NOT NULL,
+    title VARCHAR NOT NULL UNIQUE,
     description VARCHAR
 );  
 
@@ -66,8 +42,8 @@ CREATE TABLE competency_profession ( -- Связь между профессие
 
 CREATE TABLE projects ( -- Учебный проект по проектной деятельности в конкретном семесте у конкретной команды.
     project_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    title VARCHAR NOT NULL,
-    description VARCHAR NOT NUll,
+    title VARCHAR NOT NULL UNIQUE,
+    description VARCHAR,
     result VARCHAR,
     life_scenario VARCHAR,
     main_technology_id UUID REFERENCES technologies(technology_id) ON UPDATE CASCADE DEFAULT uuid_nil()
@@ -76,13 +52,13 @@ CREATE TABLE projects ( -- Учебный проект по проектной �
 -- институт/университет/компания
 CREATE TABLE organizations ( 
     organization_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    title VARCHAR
+    title VARCHAR UNIQUE
 );
 
 -- Например: Программная инженерия или Прикладная информатика?
 CREATE TABLE educational_programs (
     educational_program_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    title VARCHAR NOT NULL,
+    title VARCHAR NOT NULL UNIQUE,
     description VARCHAR,
     organizations_id UUID NOT NULL REFERENCES organizations(organization_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -90,7 +66,7 @@ CREATE TABLE educational_programs (
 -- Например: Физкультура или Программирование(скажем в 3 семестре)?
 CREATE TABLE disciplines (
     discipline_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    title VARCHAR NOT NULL,
+    title VARCHAR NOT NULL UNIQUE,
     description VARCHAR,
     educational_program_id UUID NOT NULL REFERENCES educational_programs(educational_program_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -98,7 +74,7 @@ CREATE TABLE disciplines (
 -- Например в разделе Программирование (в 3 семестре): Go от geekbrains, Java от УрФУ, Kotlin от ИТМО?
 CREATE TABLE courses (
     course_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    title VARCHAR NOT NULL,
+    title VARCHAR NOT NULL UNIQUE,
     description VARCHAR,
     teacher VARCHAR, 
     discipline_id UUID NOT NULL REFERENCES disciplines(discipline_id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -121,9 +97,6 @@ CREATE TABLE project_portfolio_competencies (
     project_id UUID REFERENCES projects (project_id) ON UPDATE CASCADE ON DELETE CASCADE,
     portfolio_id UUID REFERENCES portfolios (portfolio_id) ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (competency_id, project_id, portfolio_id)
-    -- CONSTRAINT fk_competency FOREIGN KEY(competency_id) REFERENCES competencies(competency_id),
-    -- CONSTRAINT fk_project_id FOREIGN KEY(project_id) REFERENCES projects(project_id),
-    -- CONSTRAINT fk_portfolio_id FOREIGN KEY(portfolio_id) REFERENCES portfolio_id(portfolio_id)
 );
 
 
@@ -136,8 +109,6 @@ CREATE TABLE students ( -- Информация о конкретном студ
 );
 
 CREATE TABLE study_groups ( -- Учебная группа конкретного человека в конкретном семестре (Например РИ-220942)
-    -- study_group_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    -- semester SMALLINT CHECK (semester > 0), 
     course_id UUID REFERENCES courses(course_id) ON DELETE CASCADE ON UPDATE CASCADE,
     student_id UUID REFERENCES students(student_id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (course_id, student_id)
@@ -150,7 +121,7 @@ CREATE TABLE trajectories ( -- Траектория конкретного ст�
     semester SMALLINT CHECK (semester > 0)
 );
 
-CREATE TABLE course_competencies ( -- список компетенции у траектории
+CREATE TABLE course_competency ( -- список компетенции у траектории
     course_id UUID REFERENCES courses(course_id) ON DELETE CASCADE ON UPDATE CASCADE, -- ошибка
     competency_id UUID REFERENCES competencies(competency_id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (course_id, competency_id)
@@ -161,7 +132,7 @@ CREATE TABLE course_competencies ( -- список компетенции у т�
 SELECT 'down SQL query';
 -- +goose StatementEnd
 
-DROP TABLE course_competencies;
+DROP TABLE course_competency;
 DROP TABLE trajectories;
 DROP TABLE study_groups;
 DROP TABLE students;

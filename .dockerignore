@@ -22,5 +22,7 @@
 **/secrets.dev.yaml
 **/values.dev.yaml
 **/.env
+**/20231127173014_first_script.sql
+**/20231202193628_manychanges.sql
 LICENSE
 README.md

@@ -1,6 +1,8 @@
 package model
 
 import (
+	"time"
+
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -15,11 +17,11 @@ type GetTechnologyResponse struct {
 }
 
 type GetCompetencyResponse struct {
-	Id             uuid.UUID `json:"competencyId,omitempty"`
-	Title          string    `json:"competencyTitle"`
-	Skills         string    `json:"competencySkills,omitempty"`
-	MainTechnology string    `json:"competencyMainTechnology,omitempty"`
-	Knowledge      []string  `json:"competencyKnowledge,omitempty"`
+	Id               uuid.UUID `json:"competencyId,omitempty"`
+	Title            string    `json:"competencyTitle"`
+	Skills           string    `json:"competencySkills,omitempty"`
+	MainTechnologyId uuid.UUID `json:"competencyMainTechnology,omitempty"`
+	Knowledge        []string  `json:"competencyKnowledge,omitempty"`
 }
 
 type GetProfessionResponse struct {
@@ -67,15 +69,15 @@ type GetCourseResponse struct {
 }
 
 type GetPersonalProjectResponse struct {
-	// Id             uuid.UUID `json:"personalProjectId,omitempty"`
-	Title          string   `json:"personalProjectTitle"`
-	Description    string   `json:"personalProjectDescription,omitempty"`
-	Result         string   `json:"personalProjectResult,omitempty"`
-	LifeScenario   string   `json:"personalProjectLifeScenarion,omitempty"`
-	MainTechnology string   `json:"personalProjectMainTechnology,omitempty"`
-	TeamRole       string   `json:"personalProjectTeamRole"`
-	Semester       string   `json:"personalProjectSemester"`
-	Competencies   []string `json:"personalProjectCompetencies,omitempty"`
+	Id             uuid.UUID `json:"personalProjectId,omitempty"`
+	Title          string    `json:"personalProjectTitle"`
+	Description    string    `json:"personalProjectDescription,omitempty"`
+	Result         string    `json:"personalProjectResult,omitempty"`
+	LifeScenario   string    `json:"personalProjectLifeScenarion,omitempty"`
+	MainTechnology string    `json:"personalProjectMainTechnology,omitempty"`
+	TeamRole       string    `json:"personalProjectTeamRole"`
+	Semester       string    `json:"personalProjectSemester"`
+	Competencies   []string  `json:"personalProjectCompetencies,omitempty"`
 }
 
 type GetPortfolioResponse struct {
@@ -112,4 +114,86 @@ type PostKnowledgeRequest struct {
 
 type PostTechnologyRequest struct {
 	Title string `json:"technologyTitle"`
+}
+
+type PostProjectResponse struct {
+	Id               uuid.UUID `json:"projectId,omitempty"`
+	Title            string    `json:"projectTitle"`
+	Description      string    `json:"projectDescription,omitempty"`
+	Result           string    `json:"projectResult,omitempty"`
+	LifeScenario     string    `json:"projectLifeScenarion,omitempty"`
+	MainTechnologyId uuid.UUID `json:"projectMainTechnologyId,omitempty"`
+}
+
+type PostEducationalProgramResponse struct {
+	Id             uuid.UUID `json:"educationalProgramId,omitempty"`
+	Title          string    `json:"educationalProgramTitle"`
+	Description    string    `json:"educationalProgramDexcription,omitempty"`
+	OrganizationId uuid.UUID `json:"educationalProgramOrganizationId,omitempty"`
+}
+
+type PostDisciplineResponse struct {
+	Id                   uuid.UUID `json:"disciplineId,omitempty"`
+	Title                string    `json:"disciplineTitle"`
+	Description          string    `json:"disciplineDescription,omitempty"`
+	EducationalProgramId uuid.UUID `json:"disciplineEducationalProgramId,omitempty"`
+}
+
+type PostCourseResponse struct {
+	Id           uuid.UUID `json:"courseId,omitempty"`
+	Title        string    `json:"courseTitle"`
+	Description  string    `json:"courseDescription,omitempty"`
+	Teacher      string    `json:"courseTeacher,omitempty"`
+	DisciplineId uuid.UUID `json:"courseDiscipline,omitempty"`
+}
+
+type PostPortfolioResponse struct {
+	Id uuid.UUID `json:"portfolioId,omitempty"`
+}
+
+type PostProjectPortfolioResponse struct {
+	ProjectId   uuid.UUID `json:"ProjectId"`
+	PortfolioId uuid.UUID `json:"PortfolioId"`
+	TeamRole    string    `json:"TeamRole,omitempty"`
+	Semester    uint8     `json:"projectSemester,omitempty"`
+}
+
+type PostProjectPortfolioCompetencyResponse struct {
+	ProjectId    uuid.UUID `json:"projectId"`
+	PortfolioId  uuid.UUID `json:"PortfolioId"`
+	CompetencyId uuid.UUID `json:"CompetencyId"`
+}
+
+type PostStudentResponse struct {
+	Id          uuid.UUID `json:"studentId,omitempty"`
+	FullName    string    `json:"studentFullName"`
+	Admition    time.Time `json:"studentAdmitionDate"`
+	PortfolioId uuid.UUID `json:"studentPortfolioId,omitempty"`
+}
+
+type PostTrajectoryResponse struct {
+	Id        uuid.UUID `json:"trajectoryId,omitempty"`
+	StudentId uuid.UUID `json:"trajectoryStudentId"`
+	Semester  uint8     `json:"trajectorySemester"`
+	CourseId  uuid.UUID `json:"trajectoryCourseId"`
+}
+
+type PostKnowledgeCompetencyResponse struct {
+	KnowledgeId  uuid.UUID `json:"knowledgeId"`
+	CompetencyId uuid.UUID `json:"competencyId"`
+}
+
+type PostCompetencyProfessionResponse struct {
+	CompetencyId uuid.UUID `json:"competencyId"`
+	ProfessionId uuid.UUID `json:"professionId"`
+}
+
+type PostCourseCompetencyResponse struct {
+	CourseId     uuid.UUID `json:"courseId"`
+	CompetencyId uuid.UUID `json:"competencyId"`
+}
+
+type PostStudyGroupResponse struct {
+	CourseId  uuid.UUID `json:"courseId"`
+	StudentId uuid.UUID `json:"studentId"`
 }

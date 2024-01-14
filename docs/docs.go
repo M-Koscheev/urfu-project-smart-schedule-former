@@ -15,6 +15,64 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/competency/": {
+            "post": {
+                "description": "post single competency",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "competency"
+                ],
+                "summary": "Post competency",
+                "parameters": [
+                    {
+                        "description": "Competency title",
+                        "name": "competencyTitle",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Competency skills",
+                        "name": "competencySkills",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Competency main technology id",
+                        "name": "competencyMainTechnologyId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.GetCompetencyResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/api/v1/competency/{id}": {
             "get": {
                 "description": "get single competency by ID",
@@ -49,6 +107,119 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/competencyProfession/": {
+            "post": {
+                "description": "post single competency-profession connection",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "competencyProfession"
+                ],
+                "summary": "Post competency-profession connection",
+                "parameters": [
+                    {
+                        "description": "Competency id",
+                        "name": "competencyId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Profession id",
+                        "name": "professionId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/course/": {
+            "post": {
+                "description": "post single course",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "course"
+                ],
+                "summary": "Post course",
+                "parameters": [
+                    {
+                        "description": "Course title",
+                        "name": "courseTitle",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Course description",
+                        "name": "courseDescription",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Course teacher",
+                        "name": "courseTeacher",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Course discipline id",
+                        "name": "courseDisciplineId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.PostCourseResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -97,6 +268,110 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/courseCompetency/": {
+            "post": {
+                "description": "post single course-competency connection",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "courseCompetency"
+                ],
+                "summary": "Post course-competency connection",
+                "parameters": [
+                    {
+                        "description": "Course id",
+                        "name": "courseId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Competency id",
+                        "name": "competencyId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/discipline/": {
+            "post": {
+                "description": "post single discipline",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "discipline"
+                ],
+                "summary": "Post discipline",
+                "parameters": [
+                    {
+                        "description": "Discipline title",
+                        "name": "disciplineTitle",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Discipline description",
+                        "name": "disciplineDescription",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Discipline educational program id",
+                        "name": "disciplineEducationalProgramId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.PostDisciplineResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/api/v1/discipline/{id}": {
             "get": {
                 "description": "get single discipline by ID",
@@ -131,6 +406,64 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/educationalProgram/": {
+            "post": {
+                "description": "post single educational program",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "educational program"
+                ],
+                "summary": "Post educational program",
+                "parameters": [
+                    {
+                        "description": "Educational program title",
+                        "name": "eduacationalProgramTitle",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Educational program description",
+                        "name": "eduacationalProgramDescription",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Educational program organization id",
+                        "name": "eduacationalProgramOrganizationId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.PostEducationalProgramResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -181,7 +514,7 @@ const docTemplate = `{
         },
         "/api/v1/knowledge/": {
             "post": {
-                "description": "post single knowledge (or check if it is already exists)",
+                "description": "post single knowledge",
                 "consumes": [
                     "application/json"
                 ],
@@ -260,6 +593,92 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/knowledgeCompetency/": {
+            "post": {
+                "description": "post single knowledge-competency connection",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "knowledgeCompetency"
+                ],
+                "summary": "Post knowledge-competency connection",
+                "parameters": [
+                    {
+                        "description": "Knowledge id",
+                        "name": "knowledgeId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Competency id",
+                        "name": "competencyId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/organization/": {
+            "post": {
+                "description": "post single organization",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "organization"
+                ],
+                "summary": "Post organization",
+                "parameters": [
+                    {
+                        "description": "Organization title",
+                        "name": "organizationTitle",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.GetOrganizationResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/api/v1/organization/{id}": {
             "get": {
                 "description": "get single organization by ID",
@@ -270,7 +689,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "project"
+                    "organization"
                 ],
                 "summary": "Show organization",
                 "parameters": [
@@ -294,6 +713,32 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/portfolio/": {
+            "post": {
+                "description": "post single portfolio",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "portfolio"
+                ],
+                "summary": "Post portfolio",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.PostPortfolioResponse"
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -342,6 +787,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/profession/": {
+            "post": {
+                "description": "post single profession",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "profession"
+                ],
+                "summary": "Post profession",
+                "parameters": [
+                    {
+                        "description": "Profession title",
+                        "name": "professionTitle",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.GetProfessionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/api/v1/profession/{id}": {
             "get": {
                 "description": "get single profession by ID",
@@ -376,6 +861,82 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/project/": {
+            "post": {
+                "description": "post single project",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project"
+                ],
+                "summary": "Post project",
+                "parameters": [
+                    {
+                        "description": "Project title",
+                        "name": "projectTitle",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Project description",
+                        "name": "projectDescription",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Project result",
+                        "name": "projectResult",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Project life scenario",
+                        "name": "projectLifeScenario",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Project main technology id",
+                        "name": "projectMainTechnologyId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.PostProjectResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -424,6 +985,183 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/projectPortfolio/": {
+            "post": {
+                "description": "post single project-portfolio connection",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "projectPortfolio"
+                ],
+                "summary": "Post project-portfolio connection",
+                "parameters": [
+                    {
+                        "description": "Project id",
+                        "name": "competencyId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Portfolio id",
+                        "name": "portfolioId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Team role id",
+                        "name": "teamRole",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "semester",
+                        "name": "semester",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/projectPortfolioCompetency/": {
+            "post": {
+                "description": "post single project-portfolio-competency connection",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "projectPortfolioCompetency"
+                ],
+                "summary": "Post project-portfolio-competency connection",
+                "parameters": [
+                    {
+                        "description": "Project id",
+                        "name": "competencyId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Portfolio id",
+                        "name": "portfolioId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Competency id",
+                        "name": "competencyId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/student/": {
+            "post": {
+                "description": "post single student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "student"
+                ],
+                "summary": "Post student",
+                "parameters": [
+                    {
+                        "description": "Student` + "`" + `s full name",
+                        "name": "studentFullName",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Student` + "`" + `s admition date",
+                        "name": "studentAdmitionDate",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Student` + "`" + `s portfolio id",
+                        "name": "studentPortfolioId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.PostStudentResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/api/v1/student/{id}": {
             "get": {
                 "description": "get single student by ID",
@@ -465,9 +1203,55 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/studyGroup/": {
+            "post": {
+                "description": "Student` + "`" + `s course in current semester",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "studyGroup"
+                ],
+                "summary": "Post student` + "`" + `s course in current semester",
+                "parameters": [
+                    {
+                        "description": "Course id",
+                        "name": "courseId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Student id",
+                        "name": "studentId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/api/v1/technology/": {
             "post": {
-                "description": "post single technology (or check if it is already exists)",
+                "description": "post single technology",
                 "consumes": [
                     "application/json"
                 ],
@@ -539,6 +1323,64 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/trajectory/": {
+            "post": {
+                "description": "post single student` + "`" + `s archive course",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "trajectory"
+                ],
+                "summary": "Post student` + "`" + `s archive course",
+                "parameters": [
+                    {
+                        "description": "Student` + "`" + `s id",
+                        "name": "studentId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Trajectory semester",
+                        "name": "trajectorySemester",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Course id",
+                        "name": "courseId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.PostTrajectoryResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -706,6 +1548,9 @@ const docTemplate = `{
                 "personalProjectDescription": {
                     "type": "string"
                 },
+                "personalProjectId": {
+                    "type": "string"
+                },
                 "personalProjectLifeScenarion": {
                     "type": "string"
                 },
@@ -722,7 +1567,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "personalProjectTitle": {
-                    "description": "Id             uuid.UUID ` + "`" + `json:\"personalProjectId,omitempty\"` + "`" + `",
                     "type": "string"
                 }
             }
@@ -830,6 +1674,125 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "trajectoryStudent": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.PostCourseResponse": {
+            "type": "object",
+            "properties": {
+                "courseDescription": {
+                    "type": "string"
+                },
+                "courseDiscipline": {
+                    "type": "string"
+                },
+                "courseId": {
+                    "type": "string"
+                },
+                "courseTeacher": {
+                    "type": "string"
+                },
+                "courseTitle": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.PostDisciplineResponse": {
+            "type": "object",
+            "properties": {
+                "disciplineDescription": {
+                    "type": "string"
+                },
+                "disciplineEducationalProgramId": {
+                    "type": "string"
+                },
+                "disciplineId": {
+                    "type": "string"
+                },
+                "disciplineTitle": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.PostEducationalProgramResponse": {
+            "type": "object",
+            "properties": {
+                "educationalProgramDexcription": {
+                    "type": "string"
+                },
+                "educationalProgramId": {
+                    "type": "string"
+                },
+                "educationalProgramOrganizationId": {
+                    "type": "string"
+                },
+                "educationalProgramTitle": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.PostPortfolioResponse": {
+            "type": "object",
+            "properties": {
+                "portfolioId": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.PostProjectResponse": {
+            "type": "object",
+            "properties": {
+                "projectDescription": {
+                    "type": "string"
+                },
+                "projectId": {
+                    "type": "string"
+                },
+                "projectLifeScenarion": {
+                    "type": "string"
+                },
+                "projectMainTechnologyId": {
+                    "type": "string"
+                },
+                "projectResult": {
+                    "type": "string"
+                },
+                "projectTitle": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.PostStudentResponse": {
+            "type": "object",
+            "properties": {
+                "studentAdmitionDate": {
+                    "type": "string"
+                },
+                "studentFullName": {
+                    "type": "string"
+                },
+                "studentId": {
+                    "type": "string"
+                },
+                "studentPortfolioId": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.PostTrajectoryResponse": {
+            "type": "object",
+            "properties": {
+                "trajectoryCourseId": {
+                    "type": "string"
+                },
+                "trajectoryId": {
+                    "type": "string"
+                },
+                "trajectorySemester": {
+                    "type": "integer"
+                },
+                "trajectoryStudentId": {
                     "type": "string"
                 }
             }

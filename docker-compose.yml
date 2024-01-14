@@ -1,10 +1,37 @@
 version: '3.4'
 
 services:
-  urfuprojectsmartsheduleformer:
-    image: urfuprojectsmartsheduleformer
+  postgres:
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      name: "smartScheduleContainer"
+      POSTGRES_USER: "docker"
+      POSTGRES_PASSWORD: "docker"
+      POSTGRES_DB: "smartScheduleDB"
+    volumes:
+      - scheduleData:/var/lib/postgresql/scheduleData
+
+  smartSchedule:
+    image: smart-schedule
+    restart: always
     build:
       context: .
       dockerfile: ./Dockerfile
     ports:
-      - 5432:5432
+      - "8000:8080"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: "docker"
+      DB_PASSWORD: "docker"
+      DB_NAME: postgres
+    depends_on:
+      - postgres
+    links:
+      - postgres
+
+volumes:
+  scheduleData:

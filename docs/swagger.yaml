@@ -75,6 +75,8 @@ definitions:
         type: array
       personalProjectDescription:
         type: string
+      personalProjectId:
+        type: string
       personalProjectLifeScenarion:
         type: string
       personalProjectMainTechnology:
@@ -86,7 +88,6 @@ definitions:
       personalProjectTeamRole:
         type: string
       personalProjectTitle:
-        description: Id             uuid.UUID `json:"personalProjectId,omitempty"`
         type: string
     type: object
   model.GetPortfolioResponse:
@@ -157,9 +158,124 @@ definitions:
       trajectoryStudent:
         type: string
     type: object
+  model.PostCourseResponse:
+    properties:
+      courseDescription:
+        type: string
+      courseDiscipline:
+        type: string
+      courseId:
+        type: string
+      courseTeacher:
+        type: string
+      courseTitle:
+        type: string
+    type: object
+  model.PostDisciplineResponse:
+    properties:
+      disciplineDescription:
+        type: string
+      disciplineEducationalProgramId:
+        type: string
+      disciplineId:
+        type: string
+      disciplineTitle:
+        type: string
+    type: object
+  model.PostEducationalProgramResponse:
+    properties:
+      educationalProgramDexcription:
+        type: string
+      educationalProgramId:
+        type: string
+      educationalProgramOrganizationId:
+        type: string
+      educationalProgramTitle:
+        type: string
+    type: object
+  model.PostPortfolioResponse:
+    properties:
+      portfolioId:
+        type: string
+    type: object
+  model.PostProjectResponse:
+    properties:
+      projectDescription:
+        type: string
+      projectId:
+        type: string
+      projectLifeScenarion:
+        type: string
+      projectMainTechnologyId:
+        type: string
+      projectResult:
+        type: string
+      projectTitle:
+        type: string
+    type: object
+  model.PostStudentResponse:
+    properties:
+      studentAdmitionDate:
+        type: string
+      studentFullName:
+        type: string
+      studentId:
+        type: string
+      studentPortfolioId:
+        type: string
+    type: object
+  model.PostTrajectoryResponse:
+    properties:
+      trajectoryCourseId:
+        type: string
+      trajectoryId:
+        type: string
+      trajectorySemester:
+        type: integer
+      trajectoryStudentId:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
+  /api/v1/competency/:
+    post:
+      consumes:
+      - application/json
+      description: post single competency
+      parameters:
+      - description: Competency title
+        in: body
+        name: competencyTitle
+        required: true
+        schema:
+          type: string
+      - description: Competency skills
+        in: body
+        name: competencySkills
+        required: true
+        schema:
+          type: string
+      - description: Competency main technology id
+        in: body
+        name: competencyMainTechnologyId
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetCompetencyResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Post competency
+      tags:
+      - competency
   /api/v1/competency/{id}:
     get:
       consumes:
@@ -187,6 +303,80 @@ paths:
       summary: Show competency
       tags:
       - competency
+  /api/v1/competencyProfession/:
+    post:
+      consumes:
+      - application/json
+      description: post single competency-profession connection
+      parameters:
+      - description: Competency id
+        in: body
+        name: competencyId
+        required: true
+        schema:
+          type: string
+      - description: Profession id
+        in: body
+        name: professionId
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Post competency-profession connection
+      tags:
+      - competencyProfession
+  /api/v1/course/:
+    post:
+      consumes:
+      - application/json
+      description: post single course
+      parameters:
+      - description: Course title
+        in: body
+        name: courseTitle
+        required: true
+        schema:
+          type: string
+      - description: Course description
+        in: body
+        name: courseDescription
+        required: true
+        schema:
+          type: string
+      - description: Course teacher
+        in: body
+        name: courseTeacher
+        required: true
+        schema:
+          type: string
+      - description: Course discipline id
+        in: body
+        name: courseDisciplineId
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.PostCourseResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Post course
+      tags:
+      - course
   /api/v1/course/{id}:
     get:
       consumes:
@@ -214,6 +404,74 @@ paths:
       summary: Show course
       tags:
       - course
+  /api/v1/courseCompetency/:
+    post:
+      consumes:
+      - application/json
+      description: post single course-competency connection
+      parameters:
+      - description: Course id
+        in: body
+        name: courseId
+        required: true
+        schema:
+          type: string
+      - description: Competency id
+        in: body
+        name: competencyId
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Post course-competency connection
+      tags:
+      - courseCompetency
+  /api/v1/discipline/:
+    post:
+      consumes:
+      - application/json
+      description: post single discipline
+      parameters:
+      - description: Discipline title
+        in: body
+        name: disciplineTitle
+        required: true
+        schema:
+          type: string
+      - description: Discipline description
+        in: body
+        name: disciplineDescription
+        required: true
+        schema:
+          type: string
+      - description: Discipline educational program id
+        in: body
+        name: disciplineEducationalProgramId
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.PostDisciplineResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Post discipline
+      tags:
+      - discipline
   /api/v1/discipline/{id}:
     get:
       consumes:
@@ -241,6 +499,44 @@ paths:
       summary: Show discipline
       tags:
       - discipline
+  /api/v1/educationalProgram/:
+    post:
+      consumes:
+      - application/json
+      description: post single educational program
+      parameters:
+      - description: Educational program title
+        in: body
+        name: eduacationalProgramTitle
+        required: true
+        schema:
+          type: string
+      - description: Educational program description
+        in: body
+        name: eduacationalProgramDescription
+        required: true
+        schema:
+          type: string
+      - description: Educational program organization id
+        in: body
+        name: eduacationalProgramOrganizationId
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.PostEducationalProgramResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Post educational program
+      tags:
+      - educational program
   /api/v1/educationalProgram/{id}:
     get:
       consumes:
@@ -272,7 +568,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: post single knowledge (or check if it is already exists)
+      description: post single knowledge
       parameters:
       - description: Knowledge title
         in: body
@@ -321,6 +617,62 @@ paths:
       summary: Show knowledge
       tags:
       - knowledge
+  /api/v1/knowledgeCompetency/:
+    post:
+      consumes:
+      - application/json
+      description: post single knowledge-competency connection
+      parameters:
+      - description: Knowledge id
+        in: body
+        name: knowledgeId
+        required: true
+        schema:
+          type: string
+      - description: Competency id
+        in: body
+        name: competencyId
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Post knowledge-competency connection
+      tags:
+      - knowledgeCompetency
+  /api/v1/organization/:
+    post:
+      consumes:
+      - application/json
+      description: post single organization
+      parameters:
+      - description: Organization title
+        in: body
+        name: organizationTitle
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetOrganizationResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Post organization
+      tags:
+      - organization
   /api/v1/organization/{id}:
     get:
       consumes:
@@ -347,7 +699,24 @@ paths:
           description: Internal Server Error
       summary: Show organization
       tags:
-      - project
+      - organization
+  /api/v1/portfolio/:
+    post:
+      consumes:
+      - application/json
+      description: post single portfolio
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.PostPortfolioResponse'
+        "500":
+          description: Internal Server Error
+      summary: Post portfolio
+      tags:
+      - portfolio
   /api/v1/portfolio/{id}:
     get:
       consumes:
@@ -375,6 +744,32 @@ paths:
       summary: Show portfolio
       tags:
       - portfolio
+  /api/v1/profession/:
+    post:
+      consumes:
+      - application/json
+      description: post single profession
+      parameters:
+      - description: Profession title
+        in: body
+        name: professionTitle
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetProfessionResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Post profession
+      tags:
+      - profession
   /api/v1/profession/{id}:
     get:
       consumes:
@@ -402,6 +797,56 @@ paths:
       summary: Show profession
       tags:
       - profession
+  /api/v1/project/:
+    post:
+      consumes:
+      - application/json
+      description: post single project
+      parameters:
+      - description: Project title
+        in: body
+        name: projectTitle
+        required: true
+        schema:
+          type: string
+      - description: Project description
+        in: body
+        name: projectDescription
+        required: true
+        schema:
+          type: string
+      - description: Project result
+        in: body
+        name: projectResult
+        required: true
+        schema:
+          type: string
+      - description: Project life scenario
+        in: body
+        name: projectLifeScenario
+        required: true
+        schema:
+          type: string
+      - description: Project main technology id
+        in: body
+        name: projectMainTechnologyId
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.PostProjectResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Post project
+      tags:
+      - project
   /api/v1/project/{id}:
     get:
       consumes:
@@ -429,6 +874,122 @@ paths:
       summary: Show project
       tags:
       - project
+  /api/v1/projectPortfolio/:
+    post:
+      consumes:
+      - application/json
+      description: post single project-portfolio connection
+      parameters:
+      - description: Project id
+        in: body
+        name: competencyId
+        required: true
+        schema:
+          type: string
+      - description: Portfolio id
+        in: body
+        name: portfolioId
+        required: true
+        schema:
+          type: string
+      - description: Team role id
+        in: body
+        name: teamRole
+        required: true
+        schema:
+          type: string
+      - description: semester
+        in: body
+        name: semester
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Post project-portfolio connection
+      tags:
+      - projectPortfolio
+  /api/v1/projectPortfolioCompetency/:
+    post:
+      consumes:
+      - application/json
+      description: post single project-portfolio-competency connection
+      parameters:
+      - description: Project id
+        in: body
+        name: competencyId
+        required: true
+        schema:
+          type: string
+      - description: Portfolio id
+        in: body
+        name: portfolioId
+        required: true
+        schema:
+          type: string
+      - description: Competency id
+        in: body
+        name: competencyId
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Post project-portfolio-competency connection
+      tags:
+      - projectPortfolioCompetency
+  /api/v1/student/:
+    post:
+      consumes:
+      - application/json
+      description: post single student
+      parameters:
+      - description: Student`s full name
+        in: body
+        name: studentFullName
+        required: true
+        schema:
+          type: string
+      - description: Student`s admition date
+        in: body
+        name: studentAdmitionDate
+        required: true
+        schema:
+          type: string
+      - description: Student`s portfolio id
+        in: body
+        name: studentPortfolioId
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.PostStudentResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Post student
+      tags:
+      - student
   /api/v1/student/{id}:
     get:
       consumes:
@@ -456,11 +1017,41 @@ paths:
       summary: Show student
       tags:
       - student
+  /api/v1/studyGroup/:
+    post:
+      consumes:
+      - application/json
+      description: Student`s course in current semester
+      parameters:
+      - description: Course id
+        in: body
+        name: courseId
+        required: true
+        schema:
+          type: string
+      - description: Student id
+        in: body
+        name: studentId
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Post student`s course in current semester
+      tags:
+      - studyGroup
   /api/v1/technology/:
     post:
       consumes:
       - application/json
-      description: post single technology (or check if it is already exists)
+      description: post single technology
       parameters:
       - description: Technology title
         in: body
@@ -509,6 +1100,44 @@ paths:
       summary: Show technology
       tags:
       - technology
+  /api/v1/trajectory/:
+    post:
+      consumes:
+      - application/json
+      description: post single student`s archive course
+      parameters:
+      - description: Student`s id
+        in: body
+        name: studentId
+        required: true
+        schema:
+          type: string
+      - description: Trajectory semester
+        in: body
+        name: trajectorySemester
+        required: true
+        schema:
+          type: string
+      - description: Course id
+        in: body
+        name: courseId
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.PostTrajectoryResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Post student`s archive course
+      tags:
+      - trajectory
   /api/v1/trajectory/{id}:
     get:
       consumes:

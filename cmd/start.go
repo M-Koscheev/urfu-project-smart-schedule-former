@@ -14,6 +14,7 @@ func StartApp() {
 	db, err := db.CreateConnection()
 	if err != nil {
 		slog.Error("unable to connect to the database", err)
+		return
 	}
 	defer db.Close()
 
