@@ -29,5 +29,9 @@ Here you can see scheme of database created for this project:
 5. Swagger documentation
 
 ```swaggo/swag```
+http://51.250.105.228:8000/docs/
+
 ![image](https://github.com/M-Koscheev/urfu-project-smart-schedule-former/assets/84404811/cf788bf1-244e-4759-8f96-b907ac0603f5)
+
+
 
