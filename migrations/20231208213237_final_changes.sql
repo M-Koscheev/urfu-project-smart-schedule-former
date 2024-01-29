@@ -92,7 +92,7 @@ CREATE TABLE project_portfolio ( -- Связь между проектом и п
     PRIMARY KEY (project_id, portfolio_id)
 );
 
-CREATE TABLE project_portfolio_competencies (
+CREATE TABLE project_portfolio_competency (
     competency_id UUID REFERENCES competencies (competency_id) ON UPDATE CASCADE ON DELETE CASCADE,
     project_id UUID REFERENCES projects (project_id) ON UPDATE CASCADE ON DELETE CASCADE,
     portfolio_id UUID REFERENCES portfolios (portfolio_id) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -136,7 +136,7 @@ DROP TABLE course_competency;
 DROP TABLE trajectories;
 DROP TABLE study_groups;
 DROP TABLE students;
-DROP TABLE project_portfolio_competencies;
+DROP TABLE project_portfolio_competency;
 DROP TABLE project_portfolio;
 DROP TABLE portfolios;
 DROP TABLE courses;
