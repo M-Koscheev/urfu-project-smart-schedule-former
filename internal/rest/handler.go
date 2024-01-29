@@ -6,10 +6,13 @@ import (
 	"errors"
 	"log/slog"
 	"net/http"
+	"strings"
+	"time"
 
 	_ "github.com/M-Koscheev/urfu-project-smart-schedule-former/docs"
 	"github.com/M-Koscheev/urfu-project-smart-schedule-former/internal/app"
 	"github.com/M-Koscheev/urfu-project-smart-schedule-former/internal/model"
+	"github.com/lib/pq"
 
 	"github.com/julienschmidt/httprouter"
 	uuid "github.com/satori/go.uuid"
@@ -41,20 +44,21 @@ func New(app *app.App) *Handler {
 	router.POST("/api/v1/knowledge/", h.PostKnowledge)
 	router.POST("/api/v1/technology/", h.PostTechnology)
 	router.POST("/api/v1/competency/", h.PostCompetency)
-	router.POST("/api/v1/knowledgeCompetency/", h.PostCompetency)
-	router.POST("/api/v1/competencyProfession/", h.PostCompetency)
-	router.POST("/api/v1/project/", h.PostCompetency)
-	router.POST("/api/v1/organization/", h.PostCompetency)
-	router.POST("/api/v1/educationalProgram/", h.PostCompetency)
-	router.POST("/api/v1/discipline/", h.PostCompetency)
-	router.POST("/api/v1/course/", h.PostCompetency)
-	router.POST("/api/v1/courseCompetency/", h.PostCompetency)
-	router.POST("/api/v1/portfolio/", h.PostCompetency)
-	router.POST("/api/v1/projectPortfolio/", h.PostCompetency)
-	router.POST("/api/v1/projectPortfolioCompetency/", h.PostCompetency)
-	router.POST("/api/v1/studyGroup/", h.PostCompetency)
-	router.POST("/api/v1/student/", h.PostCompetency)
-	router.POST("/api/v1/trajectory/", h.PostCompetency)
+	router.POST("/api/v1/knowledgeCompetency/", h.PostKnowledgeCompetency)
+	router.POST("/api/v1/profession/", h.PostProfession)
+	router.POST("/api/v1/competencyProfession/", h.PostCompetencyProfession)
+	router.POST("/api/v1/project/", h.PostProject)
+	router.POST("/api/v1/organization/", h.PostOrganization)
+	router.POST("/api/v1/educationalProgram/", h.PostEducationalProgram)
+	router.POST("/api/v1/discipline/", h.PostDiscipline)
+	router.POST("/api/v1/course/", h.PostCourse)
+	router.POST("/api/v1/courseCompetency/", h.PostCourseCompetency)
+	router.POST("/api/v1/portfolio/", h.PostPortfolio)
+	router.POST("/api/v1/projectPortfolio/", h.PostProjectPortfolio)
+	router.POST("/api/v1/projectPortfolioCompetency/", h.PostProjectPortfolioCompetency)
+	router.POST("/api/v1/studyGroup/", h.PostStudyGroup)
+	router.POST("/api/v1/student/", h.PostStudent)
+	router.POST("/api/v1/trajectory/", h.PostTrajectory)
 
 	return h
 }
@@ -67,7 +71,7 @@ func New(app *app.App) *Handler {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  true  "Knowledge ID"
-// @Success      200  {object}  model.GetKnowledgeResponse
+// @Success      200  {object}  model.GetKnowledge
 // @Failure      400
 // @Failure      404
 // @Failure      500
@@ -109,7 +113,7 @@ func (h *Handler) GetKnowledge(w http.ResponseWriter, r *http.Request, params ht
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  true  "Technology ID"
-// @Success      200  {object}  model.GetTechnologyResponse
+// @Success      200  {object}  model.GetTechnology
 // @Failure      400
 // @Failure      404
 // @Failure      500
@@ -151,7 +155,7 @@ func (h *Handler) GetTechnology(w http.ResponseWriter, r *http.Request, params h
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  true  "Competency ID"
-// @Success      200  {object}  model.GetCompetencyResponse
+// @Success      200  {object}  model.GetCompetency
 // @Failure      400
 // @Failure      404
 // @Failure      500
@@ -193,7 +197,7 @@ func (h *Handler) GetCompetency(w http.ResponseWriter, r *http.Request, params h
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  true  "Profession ID"
-// @Success      200  {object}  model.GetProfessionResponse
+// @Success      200  {object}  model.GetProfession
 // @Failure      400
 // @Failure      404
 // @Failure      500
@@ -235,7 +239,7 @@ func (h *Handler) GetProfession(w http.ResponseWriter, r *http.Request, params h
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  true  "Project ID"
-// @Success      200  {object}  model.GetProjectResponse
+// @Success      200  {object}  model.GetProject
 // @Failure      400
 // @Failure      404
 // @Failure      500
@@ -277,7 +281,7 @@ func (h *Handler) GetProject(w http.ResponseWriter, r *http.Request, params http
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  true  "Organization ID"
-// @Success      200  {object}  model.GetOrganizationResponse
+// @Success      200  {object}  model.GetOrganization
 // @Failure      400
 // @Failure      404
 // @Failure      500
@@ -319,7 +323,7 @@ func (h *Handler) GetOrganization(w http.ResponseWriter, r *http.Request, params
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  true  "Educational program ID"
-// @Success      200  {object}  model.GetEducationalProgramResponse
+// @Success      200  {object}  model.GetEducationalProgram
 // @Failure      400
 // @Failure      404
 // @Failure      500
@@ -361,7 +365,7 @@ func (h *Handler) GetEducationalProgram(w http.ResponseWriter, r *http.Request, 
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  true  "Discipline ID"
-// @Success      200  {object}  model.GetDisciplineResponse
+// @Success      200  {object}  model.GetDiscipline
 // @Failure      400
 // @Failure      404
 // @Failure      500
@@ -403,7 +407,7 @@ func (h *Handler) GetDiscipline(w http.ResponseWriter, r *http.Request, params h
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  true  "Course ID"
-// @Success      200  {object}  model.GetCourseResponse
+// @Success      200  {object}  model.GetCourse
 // @Failure      400
 // @Failure      404
 // @Failure      500
@@ -445,7 +449,7 @@ func (h *Handler) GetCourse(w http.ResponseWriter, r *http.Request, params httpr
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  true  "Portfolio ID"
-// @Success      200  {object}  model.GetPortfolioResponse
+// @Success      200  {object}  model.GetPortfolio
 // @Failure      400
 // @Failure      404
 // @Failure      500
@@ -487,7 +491,7 @@ func (h *Handler) GetPortfolio(w http.ResponseWriter, r *http.Request, params ht
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  true  "Student ID"
-// @Success      200  {object}  model.GetStudentResponse
+// @Success      200  {object}  model.GetStudent
 // @Failure      400
 // @Failure      404
 // @Failure      500
@@ -529,7 +533,7 @@ func (h *Handler) GetStudent(w http.ResponseWriter, r *http.Request, params http
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  true  "Trajectory ID"
-// @Success      200  {object}  model.GetTrajectoryResponse
+// @Success      200  {object}  model.GetTrajectory
 // @Failure      400
 // @Failure      404
 // @Failure      500
@@ -570,15 +574,16 @@ func (h *Handler) GetTrajectory(w http.ResponseWriter, r *http.Request, params h
 // @Tags         knowledge
 // @Accept       json
 // @Produce      json
-// @Param        knowledgeTitle   body      string  true  "Knowledge title"
-// @Success      200  {object}  model.GetKnowledgeResponse
+// @Param        input   body      model.PostKnowledge  true  "Knowledge request"
+// @Success      200  {object}  model.GetKnowledge
 // @Failure      400
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/knowledge/ [post]
 func (h *Handler) PostKnowledge(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 
-	var req model.PostKnowledgeRequest
+	var req model.PostKnowledge
 	var unmarshalErr *json.UnmarshalTypeError
 
 	decoder := json.NewDecoder(r.Body)
@@ -586,30 +591,47 @@ func (h *Handler) PostKnowledge(w http.ResponseWriter, r *http.Request, params h
 	err := decoder.Decode(&req)
 	if err != nil {
 		if errors.As(err, &unmarshalErr) {
-			slog.Error("Bad Request. Wrong Type provided for field "+unmarshalErr.Field, err)
+			slog.Error("Bad request. Wrong Type provided for field "+unmarshalErr.Field, err)
 		} else {
-			slog.Error("Bad Request "+err.Error(), err)
+			slog.Error("Bad request "+err.Error(), err)
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	resp, err := h.App.PostKnowledge(req.Title)
+	if errors.Is(err, app.ErrEmptyTitle) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("empty title"))
+		return
+	}
 	if err != nil {
-		slog.Error("error adding record to the knowledge table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 
 	respJSON, err := json.Marshal(resp)
 	if err != nil {
 		slog.Error("error converting data to JSON format", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		w.WriteHeader(http.StatusBadGateway)
 		return
 	}
 	w.Header().Set("content-Type", "application/json")
 	w.Write(respJSON)
-	w.WriteHeader(http.StatusOK)
 }
 
 // PostTechnology
@@ -619,15 +641,16 @@ func (h *Handler) PostKnowledge(w http.ResponseWriter, r *http.Request, params h
 // @Tags         technology
 // @Accept       json
 // @Produce      json
-// @Param        technologyTitle   body      string  true  "Technology title"
-// @Success      200  {object}  model.GetTechnologyResponse
+// @Param        input   body      model.PostTechnology  true  "Technology request"
+// @Success      200  {object}  model.GetTechnology
 // @Failure      400
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/technology/ [post]
 func (h *Handler) PostTechnology(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 
-	var req model.PostTechnologyRequest
+	var req model.PostTechnology
 	var unmarshalErr *json.UnmarshalTypeError
 
 	decoder := json.NewDecoder(r.Body)
@@ -635,18 +658,36 @@ func (h *Handler) PostTechnology(w http.ResponseWriter, r *http.Request, params 
 	err := decoder.Decode(&req)
 	if err != nil {
 		if errors.As(err, &unmarshalErr) {
-			slog.Error("Bad Request. Wrong Type provided for field "+unmarshalErr.Field, err)
+			slog.Error("Bad request. Wrong Type provided for field "+unmarshalErr.Field, err)
 		} else {
-			slog.Error("Bad Request "+err.Error(), err)
+			slog.Error("Bad request "+err.Error(), err)
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	resp, err := h.App.PostTechnology(req.Title)
+	if errors.Is(err, app.ErrEmptyTitle) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("empty title"))
+		return
+	}
 	if err != nil {
-		slog.Error("error adding record to the technology table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -658,7 +699,6 @@ func (h *Handler) PostTechnology(w http.ResponseWriter, r *http.Request, params 
 	}
 	w.Header().Set("content-Type", "application/json")
 	w.Write(respJSON)
-	w.WriteHeader(http.StatusOK)
 }
 
 // PostCompetency
@@ -668,17 +708,16 @@ func (h *Handler) PostTechnology(w http.ResponseWriter, r *http.Request, params 
 // @Tags         competency
 // @Accept       json
 // @Produce      json
-// @Param        competencyTitle   body      string  true  "Competency title"
-// @Param        competencySkills   body      string  true  "Competency skills"
-// @Param        competencyMainTechnologyId   body      string  true  "Competency main technology id"
-// @Success      200  {object}  model.GetCompetencyResponse
+// @Param        input   body      model.PostCompetency  true  "Competency request"
+// @Success      200  {object}  model.GetCompetency
 // @Failure      400
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/competency/ [post]
 func (h *Handler) PostCompetency(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 
-	var req model.GetCompetencyResponse
+	var req model.PostCompetency
 	var unmarshalErr *json.UnmarshalTypeError
 
 	decoder := json.NewDecoder(r.Body)
@@ -686,18 +725,36 @@ func (h *Handler) PostCompetency(w http.ResponseWriter, r *http.Request, params 
 	err := decoder.Decode(&req)
 	if err != nil {
 		if errors.As(err, &unmarshalErr) {
-			slog.Error("Bad Request. Wrong Type provided for field "+unmarshalErr.Field, err)
+			slog.Error("Bad request. Wrong Type provided for field "+unmarshalErr.Field, err)
 		} else {
-			slog.Error("Bad Request "+err.Error(), err)
+			slog.Error("Bad request "+err.Error(), err)
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	resp, err := h.App.PostCompetency(req.Title, req.Skills, req.MainTechnologyId)
+	if errors.Is(err, app.ErrEmptyTitle) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("empty title"))
+		return
+	}
 	if err != nil {
-		slog.Error("error adding record to the competency table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -709,7 +766,6 @@ func (h *Handler) PostCompetency(w http.ResponseWriter, r *http.Request, params 
 	}
 	w.Header().Set("content-Type", "application/json")
 	w.Write(respJSON)
-	w.WriteHeader(http.StatusOK)
 }
 
 // PostKnowledgeCompetency
@@ -719,16 +775,16 @@ func (h *Handler) PostCompetency(w http.ResponseWriter, r *http.Request, params 
 // @Tags         knowledgeCompetency
 // @Accept       json
 // @Produce      json
-// @Param        knowledgeId   body      string  true  "Knowledge id"
-// @Param        competencyId   body      string  true  "Competency id"
+// @Param        input   body      model.PostKnowledgeCompetency  true  "Knowledge-competency request"
 // @Success      200
 // @Failure      400
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/knowledgeCompetency/ [post]
 func (h *Handler) PostKnowledgeCompetency(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 
-	var req model.PostKnowledgeCompetencyResponse
+	var req model.PostKnowledgeCompetency
 	var unmarshalErr *json.UnmarshalTypeError
 
 	decoder := json.NewDecoder(r.Body)
@@ -736,18 +792,36 @@ func (h *Handler) PostKnowledgeCompetency(w http.ResponseWriter, r *http.Request
 	err := decoder.Decode(&req)
 	if err != nil {
 		if errors.As(err, &unmarshalErr) {
-			slog.Error("Bad Request. Wrong Type provided for field "+unmarshalErr.Field, err)
+			slog.Error("Bad request. Wrong Type provided for field "+unmarshalErr.Field, err)
 		} else {
-			slog.Error("Bad Request "+err.Error(), err)
+			slog.Error("Bad request "+err.Error(), err)
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	err = h.App.PostKnowledgeCompetency(req.KnowledgeId, req.CompetencyId)
+	if errors.Is(err, app.ErrEmptyId) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("empty id"))
+		return
+	}
 	if err != nil {
-		slog.Error("error adding record to the knowledge_competency table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -762,15 +836,16 @@ func (h *Handler) PostKnowledgeCompetency(w http.ResponseWriter, r *http.Request
 // @Tags         profession
 // @Accept       json
 // @Produce      json
-// @Param        professionTitle   body      string  true  "Profession title"
-// @Success      200  {object}  model.GetProfessionResponse
+// @Param        input   body      model.PostProfession  true  "Profession data"
+// @Success      200  {object}  model.GetProfession
 // @Failure      400
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/profession/ [post]
 func (h *Handler) PostProfession(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 
-	var req model.GetProfessionResponse
+	var req model.PostProfession
 	var unmarshalErr *json.UnmarshalTypeError
 
 	decoder := json.NewDecoder(r.Body)
@@ -778,18 +853,36 @@ func (h *Handler) PostProfession(w http.ResponseWriter, r *http.Request, params 
 	err := decoder.Decode(&req)
 	if err != nil {
 		if errors.As(err, &unmarshalErr) {
-			slog.Error("Bad Request. Wrong Type provided for field "+unmarshalErr.Field, err)
+			slog.Error("Bad request. Wrong Type provided for field "+unmarshalErr.Field, err)
 		} else {
-			slog.Error("Bad Request "+err.Error(), err)
+			slog.Error("Bad request "+err.Error(), err)
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	resp, err := h.App.PostProfession(req.Title, req.Description)
+	if errors.Is(err, app.ErrEmptyTitle) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("empty title"))
+		return
+	}
 	if err != nil {
-		slog.Error("error adding record to the profession table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -801,7 +894,6 @@ func (h *Handler) PostProfession(w http.ResponseWriter, r *http.Request, params 
 	}
 	w.Header().Set("content-Type", "application/json")
 	w.Write(respJSON)
-	w.WriteHeader(http.StatusOK)
 }
 
 // PostCompetencyProfession
@@ -811,16 +903,16 @@ func (h *Handler) PostProfession(w http.ResponseWriter, r *http.Request, params 
 // @Tags         competencyProfession
 // @Accept       json
 // @Produce      json
-// @Param        competencyId   body      string  true  "Competency id"
-// @Param        professionId   body      string  true  "Profession id"
+// @Param        input   body      model.PostCompetencyProfession  true  "CompetencyProfession data"
 // @Success      200
 // @Failure      400
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/competencyProfession/ [post]
 func (h *Handler) PostCompetencyProfession(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 
-	var req model.PostCompetencyProfessionResponse
+	var req model.PostCompetencyProfession
 	var unmarshalErr *json.UnmarshalTypeError
 
 	decoder := json.NewDecoder(r.Body)
@@ -828,18 +920,36 @@ func (h *Handler) PostCompetencyProfession(w http.ResponseWriter, r *http.Reques
 	err := decoder.Decode(&req)
 	if err != nil {
 		if errors.As(err, &unmarshalErr) {
-			slog.Error("Bad Request. Wrong Type provided for field "+unmarshalErr.Field, err)
+			slog.Error("Bad request. Wrong Type provided for field "+unmarshalErr.Field, err)
 		} else {
-			slog.Error("Bad Request "+err.Error(), err)
+			slog.Error("Bad request "+err.Error(), err)
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	err = h.App.PostKnowledgeCompetency(req.CompetencyId, req.ProfessionId)
+	err = h.App.PostCompetencyProfession(req.CompetencyId, req.ProfessionId)
+	if errors.Is(err, app.ErrEmptyId) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("empty id"))
+		return
+	}
 	if err != nil {
-		slog.Error("error adding record to the competency_profession table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -854,19 +964,16 @@ func (h *Handler) PostCompetencyProfession(w http.ResponseWriter, r *http.Reques
 // @Tags         project
 // @Accept       json
 // @Produce      json
-// @Param        projectTitle   body      string  true  "Project title"
-// @Param        projectDescription   body      string  true  "Project description"
-// @Param        projectResult   body      string  true  "Project result"
-// @Param        projectLifeScenario   body      string  true  "Project life scenario"
-// @Param        projectMainTechnologyId   body      string  true  "Project main technology id"
-// @Success      200  {object}  model.PostProjectResponse
+// @Param        input   body      model.PostProject  true  "Project data"
+// @Success      200  {object}  model.GetProject
 // @Failure      400
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/project/ [post]
 func (h *Handler) PostProject(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 
-	var req model.PostProjectResponse
+	var req model.PostProject
 	var unmarshalErr *json.UnmarshalTypeError
 
 	decoder := json.NewDecoder(r.Body)
@@ -874,18 +981,36 @@ func (h *Handler) PostProject(w http.ResponseWriter, r *http.Request, params htt
 	err := decoder.Decode(&req)
 	if err != nil {
 		if errors.As(err, &unmarshalErr) {
-			slog.Error("Bad Request. Wrong Type provided for field "+unmarshalErr.Field, err)
+			slog.Error("Bad request. Wrong Type provided for field "+unmarshalErr.Field, err)
 		} else {
-			slog.Error("Bad Request "+err.Error(), err)
+			slog.Error("Bad request "+err.Error(), err)
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	resp, err := h.App.PostProject(req.Title, req.Description, req.Result, req.LifeScenario, req.MainTechnologyId)
+	if errors.Is(err, app.ErrEmptyTitle) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("empty title"))
+		return
+	}
 	if err != nil {
-		slog.Error("error adding record to the project table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -897,7 +1022,6 @@ func (h *Handler) PostProject(w http.ResponseWriter, r *http.Request, params htt
 	}
 	w.Header().Set("content-Type", "application/json")
 	w.Write(respJSON)
-	w.WriteHeader(http.StatusOK)
 }
 
 // PostOrganization
@@ -907,15 +1031,16 @@ func (h *Handler) PostProject(w http.ResponseWriter, r *http.Request, params htt
 // @Tags         organization
 // @Accept       json
 // @Produce      json
-// @Param        organizationTitle   body      string  true  "Organization title"
-// @Success      200  {object}  model.GetOrganizationResponse
+// @Param        input   body      model.PostOrganization  true  "Organization data"
+// @Success      200  {object}  model.GetOrganization
 // @Failure      400
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/organization/ [post]
 func (h *Handler) PostOrganization(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 
-	var req model.GetOrganizationResponse
+	var req model.GetOrganization
 	var unmarshalErr *json.UnmarshalTypeError
 
 	decoder := json.NewDecoder(r.Body)
@@ -923,18 +1048,36 @@ func (h *Handler) PostOrganization(w http.ResponseWriter, r *http.Request, param
 	err := decoder.Decode(&req)
 	if err != nil {
 		if errors.As(err, &unmarshalErr) {
-			slog.Error("Bad Request. Wrong Type provided for field "+unmarshalErr.Field, err)
+			slog.Error("Bad request. Wrong Type provided for field "+unmarshalErr.Field, err)
 		} else {
-			slog.Error("Bad Request "+err.Error(), err)
+			slog.Error("Bad request "+err.Error(), err)
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	resp, err := h.App.PostOrganization(req.Title)
+	if errors.Is(err, app.ErrEmptyTitle) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("empty title"))
+		return
+	}
 	if err != nil {
-		slog.Error("error adding record to the organization table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -946,7 +1089,6 @@ func (h *Handler) PostOrganization(w http.ResponseWriter, r *http.Request, param
 	}
 	w.Header().Set("content-Type", "application/json")
 	w.Write(respJSON)
-	w.WriteHeader(http.StatusOK)
 }
 
 // PostEducationalProgram
@@ -956,17 +1098,16 @@ func (h *Handler) PostOrganization(w http.ResponseWriter, r *http.Request, param
 // @Tags         educational program
 // @Accept       json
 // @Produce      json
-// @Param        eduacationalProgramTitle   body      string  true  "Educational program title"
-// @Param        eduacationalProgramDescription   body      string  true  "Educational program description"
-// @Param        eduacationalProgramOrganizationId   body      string  true  "Educational program organization id"
-// @Success      200  {object}  model.PostEducationalProgramResponse
+// @Param        input   body      model.PostEducationalProgram  true  "Educational program data"
+// @Success      200  {object}  model.GetEducationalProgram
 // @Failure      400
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/educationalProgram/ [post]
 func (h *Handler) PostEducationalProgram(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 
-	var req model.PostEducationalProgramResponse
+	var req model.PostEducationalProgram
 	var unmarshalErr *json.UnmarshalTypeError
 
 	decoder := json.NewDecoder(r.Body)
@@ -974,18 +1115,36 @@ func (h *Handler) PostEducationalProgram(w http.ResponseWriter, r *http.Request,
 	err := decoder.Decode(&req)
 	if err != nil {
 		if errors.As(err, &unmarshalErr) {
-			slog.Error("Bad Request. Wrong Type provided for field "+unmarshalErr.Field, err)
+			slog.Error("Bad request. Wrong Type provided for field "+unmarshalErr.Field, err)
 		} else {
-			slog.Error("Bad Request "+err.Error(), err)
+			slog.Error("Bad request "+err.Error(), err)
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	resp, err := h.App.PostEducationalProgram(req.Title, req.Description, req.OrganizationId)
+	if errors.Is(err, app.ErrEmptyTitle) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("empty title"))
+		return
+	}
 	if err != nil {
-		slog.Error("error adding record to the educational program table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -997,7 +1156,6 @@ func (h *Handler) PostEducationalProgram(w http.ResponseWriter, r *http.Request,
 	}
 	w.Header().Set("content-Type", "application/json")
 	w.Write(respJSON)
-	w.WriteHeader(http.StatusOK)
 }
 
 // PostDiscipline
@@ -1007,17 +1165,16 @@ func (h *Handler) PostEducationalProgram(w http.ResponseWriter, r *http.Request,
 // @Tags         discipline
 // @Accept       json
 // @Produce      json
-// @Param        disciplineTitle   body      string  true  "Discipline title"
-// @Param        disciplineDescription   body      string  true  "Discipline description"
-// @Param        disciplineEducationalProgramId   body      string  true  "Discipline educational program id"
-// @Success      200  {object}  model.PostDisciplineResponse
+// @Param        input   body      model.PostDiscipline  true  "Discipline data"
+// @Success      200  {object}  model.GetDiscipline
 // @Failure      400
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/discipline/ [post]
 func (h *Handler) PostDiscipline(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 
-	var req model.PostDisciplineResponse
+	var req model.PostDiscipline
 	var unmarshalErr *json.UnmarshalTypeError
 
 	decoder := json.NewDecoder(r.Body)
@@ -1025,18 +1182,36 @@ func (h *Handler) PostDiscipline(w http.ResponseWriter, r *http.Request, params 
 	err := decoder.Decode(&req)
 	if err != nil {
 		if errors.As(err, &unmarshalErr) {
-			slog.Error("Bad Request. Wrong Type provided for field "+unmarshalErr.Field, err)
+			slog.Error("Bad request. Wrong Type provided for field "+unmarshalErr.Field, err)
 		} else {
-			slog.Error("Bad Request "+err.Error(), err)
+			slog.Error("Bad request "+err.Error(), err)
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	resp, err := h.App.PostDiscipline(req.Title, req.Description, req.EducationalProgramId)
+	if errors.Is(err, app.ErrEmptyTitle) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("empty title"))
+		return
+	}
 	if err != nil {
-		slog.Error("error adding record to the discipline table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -1048,7 +1223,6 @@ func (h *Handler) PostDiscipline(w http.ResponseWriter, r *http.Request, params 
 	}
 	w.Header().Set("content-Type", "application/json")
 	w.Write(respJSON)
-	w.WriteHeader(http.StatusOK)
 }
 
 // PostCourse
@@ -1058,18 +1232,16 @@ func (h *Handler) PostDiscipline(w http.ResponseWriter, r *http.Request, params 
 // @Tags         course
 // @Accept       json
 // @Produce      json
-// @Param        courseTitle   body      string  true  "Course title"
-// @Param        courseDescription   body      string  true  "Course description"
-// @Param        courseTeacher   body      string  true  "Course teacher"
-// @Param        courseDisciplineId   body      string  true  "Course discipline id"
-// @Success      200  {object}  model.PostCourseResponse
+// @Param        input   body      model.PostCourse  true  "Course data"
+// @Success      200  {object}  model.GetCourse
 // @Failure      400
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/course/ [post]
 func (h *Handler) PostCourse(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 
-	var req model.PostCourseResponse
+	var req model.PostCourse
 	var unmarshalErr *json.UnmarshalTypeError
 
 	decoder := json.NewDecoder(r.Body)
@@ -1077,18 +1249,36 @@ func (h *Handler) PostCourse(w http.ResponseWriter, r *http.Request, params http
 	err := decoder.Decode(&req)
 	if err != nil {
 		if errors.As(err, &unmarshalErr) {
-			slog.Error("Bad Request. Wrong Type provided for field "+unmarshalErr.Field, err)
+			slog.Error("Bad request. Wrong Type provided for field "+unmarshalErr.Field, err)
 		} else {
-			slog.Error("Bad Request "+err.Error(), err)
+			slog.Error("Bad request "+err.Error(), err)
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	resp, err := h.App.PostCourse(req.Title, req.Description, req.Teacher, req.DisciplineId)
+	if errors.Is(err, app.ErrEmptyTitle) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("empty title"))
+		return
+	}
 	if err != nil {
-		slog.Error("error adding record to the course table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -1100,7 +1290,6 @@ func (h *Handler) PostCourse(w http.ResponseWriter, r *http.Request, params http
 	}
 	w.Header().Set("content-Type", "application/json")
 	w.Write(respJSON)
-	w.WriteHeader(http.StatusOK)
 }
 
 // PostCourseCompetency
@@ -1110,34 +1299,52 @@ func (h *Handler) PostCourse(w http.ResponseWriter, r *http.Request, params http
 // @Tags         courseCompetency
 // @Accept       json
 // @Produce      json
-// @Param        courseId   body      string  true  "Course id"
-// @Param        competencyId   body      string  true  "Competency id"
+// @Param        input   body      model.PostCourseCompetency  true  "Course-competency data"
 // @Success      200
 // @Failure      400
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/courseCompetency/ [post]
 func (h *Handler) PostCourseCompetency(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 
-	var req model.PostCourseCompetencyResponse
+	var req model.PostCourseCompetency
 	var unmarshalErr *json.UnmarshalTypeError
 	decoder := json.NewDecoder(r.Body)
 	decoder.DisallowUnknownFields()
 	err := decoder.Decode(&req)
 	if err != nil {
 		if errors.As(err, &unmarshalErr) {
-			slog.Error("Bad Request. Wrong Type provided for field "+unmarshalErr.Field, err)
+			slog.Error("Bad request. Wrong Type provided for field "+unmarshalErr.Field, err)
 		} else {
-			slog.Error("Bad Request "+err.Error(), err)
+			slog.Error("Bad request "+err.Error(), err)
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	err = h.App.PostCourseCompetency(req.CourseId, req.CompetencyId)
+	if errors.Is(err, app.ErrEmptyId) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("empty id"))
+		return
+	}
 	if err != nil {
-		slog.Error("error adding record to the course_competency table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -1152,15 +1359,29 @@ func (h *Handler) PostCourseCompetency(w http.ResponseWriter, r *http.Request, p
 // @Tags         portfolio
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  model.PostPortfolioResponse
+// @Success      200  {object}  model.PostPortfolio
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/portfolio/ [post]
 func (h *Handler) PostPortfolio(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 	resp, err := h.App.PostPortfolio()
 	if err != nil {
-		slog.Error("error adding record to the portfolio table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -1172,7 +1393,6 @@ func (h *Handler) PostPortfolio(w http.ResponseWriter, r *http.Request, params h
 	}
 	w.Header().Set("content-Type", "application/json")
 	w.Write(respJSON)
-	w.WriteHeader(http.StatusOK)
 }
 
 // PostProjectPortolio
@@ -1182,18 +1402,16 @@ func (h *Handler) PostPortfolio(w http.ResponseWriter, r *http.Request, params h
 // @Tags         projectPortfolio
 // @Accept       json
 // @Produce      json
-// @Param        competencyId   body      string  true  "Project id"
-// @Param        portfolioId   body      string  true  "Portfolio id"
-// @Param        teamRole   body      string  true  "Team role id"
-// @Param        semester   body      string  true  "semester"
+// @Param        input   body      model.PostProjectPortfolio  true  "Personal project data"
 // @Success      200
 // @Failure      400
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/projectPortfolio/ [post]
-func (h *Handler) PostProjectPortfolioResponse(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+func (h *Handler) PostProjectPortfolio(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 
-	var req model.PostProjectPortfolioResponse
+	var req model.PostProjectPortfolio
 	var unmarshalErr *json.UnmarshalTypeError
 
 	decoder := json.NewDecoder(r.Body)
@@ -1201,18 +1419,36 @@ func (h *Handler) PostProjectPortfolioResponse(w http.ResponseWriter, r *http.Re
 	err := decoder.Decode(&req)
 	if err != nil {
 		if errors.As(err, &unmarshalErr) {
-			slog.Error("Bad Request. Wrong Type provided for field "+unmarshalErr.Field, err)
+			slog.Error("Bad request. Wrong Type provided for field "+unmarshalErr.Field, err)
 		} else {
-			slog.Error("Bad Request "+err.Error(), err)
+			slog.Error("Bad request "+err.Error(), err)
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	resp, err := h.App.PostProjectPortolio(req.ProjectId, req.PortfolioId, req.TeamRole, req.Semester)
+	if errors.Is(err, app.ErrEmptyId) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("empty id"))
+		return
+	}
 	if err != nil {
-		slog.Error("error adding record to the project_portfolio table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -1224,7 +1460,6 @@ func (h *Handler) PostProjectPortfolioResponse(w http.ResponseWriter, r *http.Re
 	}
 	w.Header().Set("content-Type", "application/json")
 	w.Write(respJSON)
-	w.WriteHeader(http.StatusOK)
 }
 
 // PostProjectPortfolioCompetency
@@ -1234,17 +1469,16 @@ func (h *Handler) PostProjectPortfolioResponse(w http.ResponseWriter, r *http.Re
 // @Tags         projectPortfolioCompetency
 // @Accept       json
 // @Produce      json
-// @Param        competencyId   body      string  true  "Project id"
-// @Param        portfolioId   body      string  true  "Portfolio id"
-// @Param        competencyId   body      string  true  "Competency id"
+// @Param        input   body      model.PostProjectPortfolioCompetency  true  "Personal project competency"
 // @Success      200
 // @Failure      400
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/projectPortfolioCompetency/ [post]
 func (h *Handler) PostProjectPortfolioCompetency(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 
-	var req model.PostProjectPortfolioCompetencyResponse
+	var req model.PostProjectPortfolioCompetency
 	var unmarshalErr *json.UnmarshalTypeError
 
 	decoder := json.NewDecoder(r.Body)
@@ -1252,18 +1486,36 @@ func (h *Handler) PostProjectPortfolioCompetency(w http.ResponseWriter, r *http.
 	err := decoder.Decode(&req)
 	if err != nil {
 		if errors.As(err, &unmarshalErr) {
-			slog.Error("Bad Request. Wrong Type provided for field "+unmarshalErr.Field, err)
+			slog.Error("Bad request. Wrong Type provided for field "+unmarshalErr.Field, err)
 		} else {
-			slog.Error("Bad Request "+err.Error(), err)
+			slog.Error("Bad request "+err.Error(), err)
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	err = h.App.PostProjectPortfolioCompetency(req.ProjectId, req.PortfolioId, req.CompetencyId)
+	if errors.Is(err, app.ErrEmptyId) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("empty id"))
+		return
+	}
 	if err != nil {
-		slog.Error("error adding record to the project_portfolio_competency table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -1278,16 +1530,16 @@ func (h *Handler) PostProjectPortfolioCompetency(w http.ResponseWriter, r *http.
 // @Tags         studyGroup
 // @Accept       json
 // @Produce      json
-// @Param        courseId   body      string  true  "Course id"
-// @Param        studentId   body      string  true  "Student id"
+// @Param        input   body      model.PostStudyGroup  true  "Personal current student`s project"
 // @Success      200
 // @Failure      400
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/studyGroup/ [post]
 func (h *Handler) PostStudyGroup(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 
-	var req model.PostStudyGroupResponse
+	var req model.PostStudyGroup
 	var unmarshalErr *json.UnmarshalTypeError
 
 	decoder := json.NewDecoder(r.Body)
@@ -1295,18 +1547,36 @@ func (h *Handler) PostStudyGroup(w http.ResponseWriter, r *http.Request, params 
 	err := decoder.Decode(&req)
 	if err != nil {
 		if errors.As(err, &unmarshalErr) {
-			slog.Error("Bad Request. Wrong Type provided for field "+unmarshalErr.Field, err)
+			slog.Error("Bad request. Wrong Type provided for field "+unmarshalErr.Field, err)
 		} else {
-			slog.Error("Bad Request "+err.Error(), err)
+			slog.Error("Bad request "+err.Error(), err)
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	err = h.App.PostStudyGroup(req.CourseId, req.StudentId)
+	if errors.Is(err, app.ErrEmptyId) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("empty id"))
+		return
+	}
 	if err != nil {
-		slog.Error("error adding record to the study_groups table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -1321,17 +1591,16 @@ func (h *Handler) PostStudyGroup(w http.ResponseWriter, r *http.Request, params 
 // @Tags         student
 // @Accept       json
 // @Produce      json
-// @Param        studentFullName   body      string  true  "Student`s full name"
-// @Param        studentAdmitionDate   body      string  true  "Student`s admition date"
-// @Param        studentPortfolioId   body      string  true  "Student`s portfolio id"
-// @Success      200 {object} model.PostStudentResponse
+// @Param        input   body      model.PostStudent  true  "Student`s data"
+// @Success      200 {object} model.GetStudent
 // @Failure      400
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/student/ [post]
 func (h *Handler) PostStudent(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 
-	var req model.PostStudentResponse
+	var req model.PostStudent
 	var unmarshalErr *json.UnmarshalTypeError
 
 	decoder := json.NewDecoder(r.Body)
@@ -1339,18 +1608,53 @@ func (h *Handler) PostStudent(w http.ResponseWriter, r *http.Request, params htt
 	err := decoder.Decode(&req)
 	if err != nil {
 		if errors.As(err, &unmarshalErr) {
-			slog.Error("Bad Request. Wrong Type provided for field "+unmarshalErr.Field, err)
+			slog.Error("Bad request. Wrong Type provided for field "+unmarshalErr.Field, err)
 		} else {
-			slog.Error("Bad Request "+err.Error(), err)
+			slog.Error("Bad request "+err.Error(), err)
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	resp, err := h.App.PostStudent(req.FullName, req.Admition, req.PortfolioId)
+	bytes, err := req.Admition.MarshalJSON()
 	if err != nil {
-		slog.Error("error adding record to the students table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		slog.Error("date marshalling error " + err.Error())
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	dateString := strings.Trim(string(bytes), "\"")
+	date, err := time.Parse("2006-01-02", dateString)
+	if err != nil {
+		slog.Error("date parsing error " + err.Error())
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	resp, err := h.App.PostStudent(req.FullName, date, req.PortfolioId)
+	if errors.Is(err, app.ErrEmptyTitle) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("empty student`s name"))
+		return
+	}
+	if err != nil {
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -1362,7 +1666,6 @@ func (h *Handler) PostStudent(w http.ResponseWriter, r *http.Request, params htt
 	}
 	w.Header().Set("content-Type", "application/json")
 	w.Write(respJSON)
-	w.WriteHeader(http.StatusOK)
 }
 
 // PostTrajectory
@@ -1372,17 +1675,16 @@ func (h *Handler) PostStudent(w http.ResponseWriter, r *http.Request, params htt
 // @Tags         trajectory
 // @Accept       json
 // @Produce      json
-// @Param        studentId   body      string  true  "Student`s id"
-// @Param        trajectorySemester   body      string  true  "Trajectory semester"
-// @Param        courseId   body      string  true  "Course id"
-// @Success      200 {object} model.PostTrajectoryResponse
+// @Param        input   body      model.PostTrajectory  true  "Trajectory`s data"
+// @Success      200 {object} model.GetTrajectory
 // @Failure      400
 // @Failure      500
+// @Failure      502
 // @Router       /api/v1/trajectory/ [post]
-func (h *Handler) PostTrajectoryResponse(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+func (h *Handler) PostTrajectory(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	defer r.Body.Close()
 
-	var req model.PostTrajectoryResponse
+	var req model.PostTrajectory
 	var unmarshalErr *json.UnmarshalTypeError
 
 	decoder := json.NewDecoder(r.Body)
@@ -1390,18 +1692,37 @@ func (h *Handler) PostTrajectoryResponse(w http.ResponseWriter, r *http.Request,
 	err := decoder.Decode(&req)
 	if err != nil {
 		if errors.As(err, &unmarshalErr) {
-			slog.Error("Bad Request. Wrong Type provided for field "+unmarshalErr.Field, err)
+			slog.Error("Bad request. Wrong Type provided for field "+unmarshalErr.Field, err)
 		} else {
-			slog.Error("Bad Request "+err.Error(), err)
+			slog.Error("Bad request "+err.Error(), err)
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	resp, err := h.App.PostTrajectory(req.Semester, req.StudentId, req.CourseId)
+	if errors.Is(err, app.ErrEmptyId) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("empty id"))
+		return
+	}
 	if err != nil {
-		slog.Error("error adding record to the trajectory table", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		switch e := err.(type) {
+		case *pq.Error:
+			w.WriteHeader(http.StatusBadRequest)
+			switch e.Code {
+			case "23503":
+				w.Write([]byte("foreign key violation"))
+			case "23505":
+				w.Write([]byte("duplicate value"))
+			default:
+				w.Write([]byte(e.Message))
+			}
+		default:
+			slog.Error("unknown error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+		}
 		return
 	}
 
@@ -1413,5 +1734,4 @@ func (h *Handler) PostTrajectoryResponse(w http.ResponseWriter, r *http.Request,
 	}
 	w.Header().Set("content-Type", "application/json")
 	w.Write(respJSON)
-	w.WriteHeader(http.StatusOK)
 }
