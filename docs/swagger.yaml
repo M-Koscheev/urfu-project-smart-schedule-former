@@ -1,238 +1,413 @@
 definitions:
-  model.GetCompetencyResponse:
+  model.GetCompetency:
     properties:
       competencyId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       competencyKnowledge:
+        example:
+        - знание 1
+        - ' знание 2...'
         items:
           type: string
         type: array
       competencyMainTechnology:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       competencySkills:
+        example: навык 1, навык 2...
         type: string
       competencyTitle:
+        example: Название компетенции
         type: string
     type: object
-  model.GetCourseResponse:
+  model.GetCourse:
     properties:
       courseCompetencies:
+        example:
+        - компетенция 1
+        - ' компетенция 2...'
         items:
           type: string
         type: array
       courseDescription:
+        example: Описание курса
         type: string
       courseDiscipline:
+        example: Дисциплина, к которой отностися курс
         type: string
       courseId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       courseTeacher:
+        example: Преподаватель
         type: string
       courseTitle:
+        example: Название курса
         type: string
     type: object
-  model.GetDisciplineResponse:
+  model.GetDiscipline:
     properties:
       disciplineDescription:
+        example: Описание дисциплины
         type: string
       disciplineEducationalProgram:
+        example: Образовательная программа, в которую входит цисциплина
         type: string
       disciplineId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       disciplineTitle:
+        example: Название дисциплины
         type: string
     type: object
-  model.GetEducationalProgramResponse:
+  model.GetEducationalProgram:
     properties:
       educationalProgramDexcription:
+        example: Описание образовательной программы
         type: string
       educationalProgramId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       educationalProgramOrganization:
+        example: организация, отвечающая за образовательную программу
         type: string
       educationalProgramTitle:
+        example: Название образовательной программы
         type: string
     type: object
-  model.GetKnowledgeResponse:
+  model.GetKnowledge:
     properties:
       knowledgeId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       knowledgeTitle:
+        example: Название знания
         type: string
     type: object
-  model.GetOrganizationResponse:
+  model.GetOrganization:
     properties:
       organizationId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       organizationTitle:
+        example: Название организации
         type: string
     type: object
-  model.GetPersonalProjectResponse:
+  model.GetPersonalProject:
     properties:
       personalProjectCompetencies:
+        example:
+        - Компетенции участика в этом проекте
         items:
           type: string
         type: array
-      personalProjectDescription:
-        type: string
-      personalProjectId:
-        type: string
-      personalProjectLifeScenarion:
-        type: string
       personalProjectMainTechnology:
-        type: string
-      personalProjectResult:
+        example: Основная технология проекта
         type: string
       personalProjectSemester:
+        example: Семестр, в котором участик работал над проектом
         type: string
       personalProjectTeamRole:
+        example: Роль участника в команде
         type: string
-      personalProjectTitle:
+      projectDescription:
+        example: Курс направлен на изучение поведения капибар в дикой природе...
+        type: string
+      projectId:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      projectLifeScenarion:
+        example: Проект позволит подобрать идеальную длину шерстки для ваших капибар
+        type: string
+      projectResult:
+        example: Данные о зависимости длины шерстки капибар от продолжительности их
+          жизни
+        type: string
+      projectTitle:
+        example: Исследование зивисимости длины шерстки капибар от продолжительности
+          их жизни
         type: string
     type: object
-  model.GetPortfolioResponse:
+  model.GetPortfolio:
     properties:
       portfolioId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       portfolioProjects:
         items:
-          $ref: '#/definitions/model.GetPersonalProjectResponse'
+          $ref: '#/definitions/model.GetPersonalProject'
         type: array
     type: object
-  model.GetProfessionResponse:
+  model.GetProfession:
     properties:
       professionCompetencies:
+        example:
+        - компетенция 1
+        - ' компетенция 2...'
         items:
           type: string
         type: array
       professionDescription:
+        example: Описание профессии
         type: string
       professionId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       professionTitle:
+        example: Название профессии
         type: string
     type: object
-  model.GetProjectResponse:
+  model.GetProject:
     properties:
       projectDescription:
+        example: Курс направлен на изучение поведения капибар в дикой природе...
         type: string
       projectId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       projectLifeScenarion:
+        example: Проект позволит подобрать идеальную длину шерстки для ваших капибар
         type: string
       projectMainTechnology:
+        example: Название технологии
         type: string
       projectResult:
+        example: Данные о зависимости длины шерстки капибар от продолжительности их
+          жизни
         type: string
       projectTitle:
+        example: Исследование зивисимости длины шерстки капибар от продолжительности
+          их жизни
         type: string
     type: object
-  model.GetStudentResponse:
+  model.GetStudent:
     properties:
       studentFullName:
+        example: Фамилия Имя Отчество
         type: string
       studentId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       studentPortfolio:
-        allOf:
-        - $ref: '#/definitions/model.GetPortfolioResponse'
-        description: Admition  time.Time            `json:"studentAdmitionDate"`
+        $ref: '#/definitions/model.GetPortfolio'
       studentSemester:
+        example: 3
         type: integer
     type: object
-  model.GetTechnologyResponse:
+  model.GetTechnology:
     properties:
       technologyId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       technologyTitle:
+        example: Название технологии
         type: string
     type: object
-  model.GetTrajectoryResponse:
+  model.GetTrajectory:
     properties:
       trajectoryCourse:
+        example: Название курса
         type: string
       trajectoryId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       trajectorySemester:
+        example: 3
         type: integer
       trajectoryStudent:
+        example: Фамилия Имя Отчество
         type: string
     type: object
-  model.PostCourseResponse:
+  model.PostCompetency:
+    properties:
+      competencyMainTechnology:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      competencySkills:
+        example: навык 1, навык 2...
+        type: string
+      competencyTitle:
+        example: Название компетенции
+        type: string
+    type: object
+  model.PostCompetencyProfession:
+    properties:
+      competencyId:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      professionId:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+    type: object
+  model.PostCourse:
     properties:
       courseDescription:
+        example: Описание курса
         type: string
-      courseDiscipline:
-        type: string
-      courseId:
+      courseDisciplineId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       courseTeacher:
+        example: Фамилия Имя Отчество
         type: string
       courseTitle:
+        example: Название курса
         type: string
     type: object
-  model.PostDisciplineResponse:
+  model.PostCourseCompetency:
+    properties:
+      competencyId:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      courseId:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+    type: object
+  model.PostDiscipline:
     properties:
       disciplineDescription:
+        example: Описание дисциплины
         type: string
       disciplineEducationalProgramId:
-        type: string
-      disciplineId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       disciplineTitle:
+        example: Название дисциплины
         type: string
     type: object
-  model.PostEducationalProgramResponse:
+  model.PostEducationalProgram:
     properties:
-      educationalProgramDexcription:
-        type: string
-      educationalProgramId:
+      educationalProgramDescription:
+        example: Описание образовательной программы
         type: string
       educationalProgramOrganizationId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       educationalProgramTitle:
+        example: Название образовательной программы
         type: string
     type: object
-  model.PostPortfolioResponse:
+  model.PostKnowledge:
+    properties:
+      knowledgeTitle:
+        example: Название знания
+        type: string
+    type: object
+  model.PostKnowledgeCompetency:
+    properties:
+      competencyId:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      knowledgeId:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+    type: object
+  model.PostOrganization:
+    properties:
+      organizationTitle:
+        example: Название организации
+        type: string
+    type: object
+  model.PostPortfolio:
     properties:
       portfolioId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
     type: object
-  model.PostProjectResponse:
+  model.PostProfession:
+    properties:
+      professionDescription:
+        example: Описание профессии
+        type: string
+      professionTitle:
+        example: Название профессии
+        type: string
+    type: object
+  model.PostProject:
     properties:
       projectDescription:
-        type: string
-      projectId:
+        example: Курс направлен на изучение поведения капибар в дикой природе...
         type: string
       projectLifeScenarion:
+        example: Проект позволит подобрать идеальную длину шерстки для ваших капибар
         type: string
       projectMainTechnologyId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       projectResult:
+        example: Данные о зависимости длины шерстки капибар от продолжительности их
+          жизни
         type: string
       projectTitle:
+        example: Исследование зивисимости длины шерстки капибар от продолжительности
+          их жизни
         type: string
     type: object
-  model.PostStudentResponse:
+  model.PostProjectPortfolio:
+    properties:
+      PortfolioId:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      ProjectId:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      TeamRole:
+        example: Роль в команде
+        type: string
+      projectSemester:
+        example: 3
+        type: integer
+    type: object
+  model.PostProjectPortfolioCompetency:
+    properties:
+      CompetencyId:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      PortfolioId:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      projectId:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+    type: object
+  model.PostStudent:
     properties:
       studentAdmitionDate:
+        example: "2024-01-19"
         type: string
       studentFullName:
-        type: string
-      studentId:
+        example: Фамилия Имя Отчество
         type: string
       studentPortfolioId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
     type: object
-  model.PostTrajectoryResponse:
+  model.PostStudyGroup:
+    properties:
+      courseId:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      studentId:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+    type: object
+  model.PostTechnology:
+    properties:
+      technologyTitle:
+        example: Название технологии
+        type: string
+    type: object
+  model.PostTrajectory:
     properties:
       trajectoryCourseId:
-        type: string
-      trajectoryId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
       trajectorySemester:
+        example: 3
         type: integer
       trajectoryStudentId:
+        example: 00000000-0000-0000-0000-000000000000
         type: string
     type: object
 info:
@@ -244,35 +419,25 @@ paths:
       - application/json
       description: post single competency
       parameters:
-      - description: Competency title
+      - description: Competency request
         in: body
-        name: competencyTitle
+        name: input
         required: true
         schema:
-          type: string
-      - description: Competency skills
-        in: body
-        name: competencySkills
-        required: true
-        schema:
-          type: string
-      - description: Competency main technology id
-        in: body
-        name: competencyMainTechnologyId
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/model.PostCompetency'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetCompetencyResponse'
+            $ref: '#/definitions/model.GetCompetency'
         "400":
           description: Bad Request
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post competency
       tags:
       - competency
@@ -293,7 +458,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetCompetencyResponse'
+            $ref: '#/definitions/model.GetCompetency'
         "400":
           description: Bad Request
         "404":
@@ -309,18 +474,12 @@ paths:
       - application/json
       description: post single competency-profession connection
       parameters:
-      - description: Competency id
+      - description: CompetencyProfession data
         in: body
-        name: competencyId
+        name: input
         required: true
         schema:
-          type: string
-      - description: Profession id
-        in: body
-        name: professionId
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/model.PostCompetencyProfession'
       produces:
       - application/json
       responses:
@@ -330,6 +489,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post competency-profession connection
       tags:
       - competencyProfession
@@ -339,41 +500,25 @@ paths:
       - application/json
       description: post single course
       parameters:
-      - description: Course title
+      - description: Course data
         in: body
-        name: courseTitle
+        name: input
         required: true
         schema:
-          type: string
-      - description: Course description
-        in: body
-        name: courseDescription
-        required: true
-        schema:
-          type: string
-      - description: Course teacher
-        in: body
-        name: courseTeacher
-        required: true
-        schema:
-          type: string
-      - description: Course discipline id
-        in: body
-        name: courseDisciplineId
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/model.PostCourse'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.PostCourseResponse'
+            $ref: '#/definitions/model.GetCourse'
         "400":
           description: Bad Request
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post course
       tags:
       - course
@@ -394,7 +539,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetCourseResponse'
+            $ref: '#/definitions/model.GetCourse'
         "400":
           description: Bad Request
         "404":
@@ -410,18 +555,12 @@ paths:
       - application/json
       description: post single course-competency connection
       parameters:
-      - description: Course id
+      - description: Course-competency data
         in: body
-        name: courseId
+        name: input
         required: true
         schema:
-          type: string
-      - description: Competency id
-        in: body
-        name: competencyId
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/model.PostCourseCompetency'
       produces:
       - application/json
       responses:
@@ -431,6 +570,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post course-competency connection
       tags:
       - courseCompetency
@@ -440,35 +581,25 @@ paths:
       - application/json
       description: post single discipline
       parameters:
-      - description: Discipline title
+      - description: Discipline data
         in: body
-        name: disciplineTitle
+        name: input
         required: true
         schema:
-          type: string
-      - description: Discipline description
-        in: body
-        name: disciplineDescription
-        required: true
-        schema:
-          type: string
-      - description: Discipline educational program id
-        in: body
-        name: disciplineEducationalProgramId
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/model.PostDiscipline'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.PostDisciplineResponse'
+            $ref: '#/definitions/model.GetDiscipline'
         "400":
           description: Bad Request
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post discipline
       tags:
       - discipline
@@ -489,7 +620,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetDisciplineResponse'
+            $ref: '#/definitions/model.GetDiscipline'
         "400":
           description: Bad Request
         "404":
@@ -505,35 +636,25 @@ paths:
       - application/json
       description: post single educational program
       parameters:
-      - description: Educational program title
+      - description: Educational program data
         in: body
-        name: eduacationalProgramTitle
+        name: input
         required: true
         schema:
-          type: string
-      - description: Educational program description
-        in: body
-        name: eduacationalProgramDescription
-        required: true
-        schema:
-          type: string
-      - description: Educational program organization id
-        in: body
-        name: eduacationalProgramOrganizationId
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/model.PostEducationalProgram'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.PostEducationalProgramResponse'
+            $ref: '#/definitions/model.GetEducationalProgram'
         "400":
           description: Bad Request
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post educational program
       tags:
       - educational program
@@ -554,7 +675,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetEducationalProgramResponse'
+            $ref: '#/definitions/model.GetEducationalProgram'
         "400":
           description: Bad Request
         "404":
@@ -570,23 +691,25 @@ paths:
       - application/json
       description: post single knowledge
       parameters:
-      - description: Knowledge title
+      - description: Knowledge request
         in: body
-        name: knowledgeTitle
+        name: input
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/model.PostKnowledge'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetKnowledgeResponse'
+            $ref: '#/definitions/model.GetKnowledge'
         "400":
           description: Bad Request
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post knowledge
       tags:
       - knowledge
@@ -607,7 +730,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetKnowledgeResponse'
+            $ref: '#/definitions/model.GetKnowledge'
         "400":
           description: Bad Request
         "404":
@@ -623,18 +746,12 @@ paths:
       - application/json
       description: post single knowledge-competency connection
       parameters:
-      - description: Knowledge id
+      - description: Knowledge-competency request
         in: body
-        name: knowledgeId
+        name: input
         required: true
         schema:
-          type: string
-      - description: Competency id
-        in: body
-        name: competencyId
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/model.PostKnowledgeCompetency'
       produces:
       - application/json
       responses:
@@ -644,6 +761,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post knowledge-competency connection
       tags:
       - knowledgeCompetency
@@ -653,23 +772,25 @@ paths:
       - application/json
       description: post single organization
       parameters:
-      - description: Organization title
+      - description: Organization data
         in: body
-        name: organizationTitle
+        name: input
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/model.PostOrganization'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetOrganizationResponse'
+            $ref: '#/definitions/model.GetOrganization'
         "400":
           description: Bad Request
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post organization
       tags:
       - organization
@@ -690,7 +811,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetOrganizationResponse'
+            $ref: '#/definitions/model.GetOrganization'
         "400":
           description: Bad Request
         "404":
@@ -711,9 +832,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.PostPortfolioResponse'
+            $ref: '#/definitions/model.PostPortfolio'
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post portfolio
       tags:
       - portfolio
@@ -734,7 +857,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetPortfolioResponse'
+            $ref: '#/definitions/model.GetPortfolio'
         "400":
           description: Bad Request
         "404":
@@ -750,23 +873,25 @@ paths:
       - application/json
       description: post single profession
       parameters:
-      - description: Profession title
+      - description: Profession data
         in: body
-        name: professionTitle
+        name: input
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/model.PostProfession'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetProfessionResponse'
+            $ref: '#/definitions/model.GetProfession'
         "400":
           description: Bad Request
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post profession
       tags:
       - profession
@@ -787,7 +912,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetProfessionResponse'
+            $ref: '#/definitions/model.GetProfession'
         "400":
           description: Bad Request
         "404":
@@ -803,47 +928,25 @@ paths:
       - application/json
       description: post single project
       parameters:
-      - description: Project title
+      - description: Project data
         in: body
-        name: projectTitle
+        name: input
         required: true
         schema:
-          type: string
-      - description: Project description
-        in: body
-        name: projectDescription
-        required: true
-        schema:
-          type: string
-      - description: Project result
-        in: body
-        name: projectResult
-        required: true
-        schema:
-          type: string
-      - description: Project life scenario
-        in: body
-        name: projectLifeScenario
-        required: true
-        schema:
-          type: string
-      - description: Project main technology id
-        in: body
-        name: projectMainTechnologyId
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/model.PostProject'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.PostProjectResponse'
+            $ref: '#/definitions/model.GetProject'
         "400":
           description: Bad Request
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post project
       tags:
       - project
@@ -864,7 +967,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetProjectResponse'
+            $ref: '#/definitions/model.GetProject'
         "400":
           description: Bad Request
         "404":
@@ -880,30 +983,12 @@ paths:
       - application/json
       description: post single project-portfolio connection
       parameters:
-      - description: Project id
+      - description: Personal project data
         in: body
-        name: competencyId
+        name: input
         required: true
         schema:
-          type: string
-      - description: Portfolio id
-        in: body
-        name: portfolioId
-        required: true
-        schema:
-          type: string
-      - description: Team role id
-        in: body
-        name: teamRole
-        required: true
-        schema:
-          type: string
-      - description: semester
-        in: body
-        name: semester
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/model.PostProjectPortfolio'
       produces:
       - application/json
       responses:
@@ -913,6 +998,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post project-portfolio connection
       tags:
       - projectPortfolio
@@ -922,24 +1009,12 @@ paths:
       - application/json
       description: post single project-portfolio-competency connection
       parameters:
-      - description: Project id
+      - description: Personal project competency
         in: body
-        name: competencyId
+        name: input
         required: true
         schema:
-          type: string
-      - description: Portfolio id
-        in: body
-        name: portfolioId
-        required: true
-        schema:
-          type: string
-      - description: Competency id
-        in: body
-        name: competencyId
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/model.PostProjectPortfolioCompetency'
       produces:
       - application/json
       responses:
@@ -949,6 +1024,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post project-portfolio-competency connection
       tags:
       - projectPortfolioCompetency
@@ -958,35 +1035,25 @@ paths:
       - application/json
       description: post single student
       parameters:
-      - description: Student`s full name
+      - description: Student`s data
         in: body
-        name: studentFullName
+        name: input
         required: true
         schema:
-          type: string
-      - description: Student`s admition date
-        in: body
-        name: studentAdmitionDate
-        required: true
-        schema:
-          type: string
-      - description: Student`s portfolio id
-        in: body
-        name: studentPortfolioId
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/model.PostStudent'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.PostStudentResponse'
+            $ref: '#/definitions/model.GetStudent'
         "400":
           description: Bad Request
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post student
       tags:
       - student
@@ -1007,7 +1074,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetStudentResponse'
+            $ref: '#/definitions/model.GetStudent'
         "400":
           description: Bad Request
         "404":
@@ -1023,18 +1090,12 @@ paths:
       - application/json
       description: Student`s course in current semester
       parameters:
-      - description: Course id
+      - description: Personal current student`s project
         in: body
-        name: courseId
+        name: input
         required: true
         schema:
-          type: string
-      - description: Student id
-        in: body
-        name: studentId
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/model.PostStudyGroup'
       produces:
       - application/json
       responses:
@@ -1044,6 +1105,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post student`s course in current semester
       tags:
       - studyGroup
@@ -1053,23 +1116,25 @@ paths:
       - application/json
       description: post single technology
       parameters:
-      - description: Technology title
+      - description: Technology request
         in: body
-        name: technologyTitle
+        name: input
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/model.PostTechnology'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetTechnologyResponse'
+            $ref: '#/definitions/model.GetTechnology'
         "400":
           description: Bad Request
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post technology
       tags:
       - technology
@@ -1090,7 +1155,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetTechnologyResponse'
+            $ref: '#/definitions/model.GetTechnology'
         "400":
           description: Bad Request
         "404":
@@ -1106,35 +1171,25 @@ paths:
       - application/json
       description: post single student`s archive course
       parameters:
-      - description: Student`s id
+      - description: Trajectory`s data
         in: body
-        name: studentId
+        name: input
         required: true
         schema:
-          type: string
-      - description: Trajectory semester
-        in: body
-        name: trajectorySemester
-        required: true
-        schema:
-          type: string
-      - description: Course id
-        in: body
-        name: courseId
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/model.PostTrajectory'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.PostTrajectoryResponse'
+            $ref: '#/definitions/model.GetTrajectory'
         "400":
           description: Bad Request
         "500":
           description: Internal Server Error
+        "502":
+          description: Bad Gateway
       summary: Post student`s archive course
       tags:
       - trajectory
@@ -1155,7 +1210,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetTrajectoryResponse'
+            $ref: '#/definitions/model.GetTrajectory'
         "400":
           description: Bad Request
         "404":

@@ -30,30 +30,12 @@ const docTemplate = `{
                 "summary": "Post competency",
                 "parameters": [
                     {
-                        "description": "Competency title",
-                        "name": "competencyTitle",
+                        "description": "Competency request",
+                        "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Competency skills",
-                        "name": "competencySkills",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Competency main technology id",
-                        "name": "competencyMainTechnologyId",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.PostCompetency"
                         }
                     }
                 ],
@@ -61,7 +43,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.GetCompetencyResponse"
+                            "$ref": "#/definitions/model.GetCompetency"
                         }
                     },
                     "400": {
@@ -69,6 +51,9 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -99,7 +84,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.GetCompetencyResponse"
+                            "$ref": "#/definitions/model.GetCompetency"
                         }
                     },
                     "400": {
@@ -129,21 +114,12 @@ const docTemplate = `{
                 "summary": "Post competency-profession connection",
                 "parameters": [
                     {
-                        "description": "Competency id",
-                        "name": "competencyId",
+                        "description": "CompetencyProfession data",
+                        "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Profession id",
-                        "name": "professionId",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.PostCompetencyProfession"
                         }
                     }
                 ],
@@ -156,6 +132,9 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -175,39 +154,12 @@ const docTemplate = `{
                 "summary": "Post course",
                 "parameters": [
                     {
-                        "description": "Course title",
-                        "name": "courseTitle",
+                        "description": "Course data",
+                        "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Course description",
-                        "name": "courseDescription",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Course teacher",
-                        "name": "courseTeacher",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Course discipline id",
-                        "name": "courseDisciplineId",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.PostCourse"
                         }
                     }
                 ],
@@ -215,7 +167,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.PostCourseResponse"
+                            "$ref": "#/definitions/model.GetCourse"
                         }
                     },
                     "400": {
@@ -223,6 +175,9 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -253,7 +208,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.GetCourseResponse"
+                            "$ref": "#/definitions/model.GetCourse"
                         }
                     },
                     "400": {
@@ -283,21 +238,12 @@ const docTemplate = `{
                 "summary": "Post course-competency connection",
                 "parameters": [
                     {
-                        "description": "Course id",
-                        "name": "courseId",
+                        "description": "Course-competency data",
+                        "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Competency id",
-                        "name": "competencyId",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.PostCourseCompetency"
                         }
                     }
                 ],
@@ -310,6 +256,9 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -329,30 +278,12 @@ const docTemplate = `{
                 "summary": "Post discipline",
                 "parameters": [
                     {
-                        "description": "Discipline title",
-                        "name": "disciplineTitle",
+                        "description": "Discipline data",
+                        "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Discipline description",
-                        "name": "disciplineDescription",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Discipline educational program id",
-                        "name": "disciplineEducationalProgramId",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.PostDiscipline"
                         }
                     }
                 ],
@@ -360,7 +291,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.PostDisciplineResponse"
+                            "$ref": "#/definitions/model.GetDiscipline"
                         }
                     },
                     "400": {
@@ -368,6 +299,9 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -398,7 +332,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.GetDisciplineResponse"
+                            "$ref": "#/definitions/model.GetDiscipline"
                         }
                     },
                     "400": {
@@ -428,30 +362,12 @@ const docTemplate = `{
                 "summary": "Post educational program",
                 "parameters": [
                     {
-                        "description": "Educational program title",
-                        "name": "eduacationalProgramTitle",
+                        "description": "Educational program data",
+                        "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Educational program description",
-                        "name": "eduacationalProgramDescription",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Educational program organization id",
-                        "name": "eduacationalProgramOrganizationId",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.PostEducationalProgram"
                         }
                     }
                 ],
@@ -459,7 +375,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.PostEducationalProgramResponse"
+                            "$ref": "#/definitions/model.GetEducationalProgram"
                         }
                     },
                     "400": {
@@ -467,6 +383,9 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -497,7 +416,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.GetEducationalProgramResponse"
+                            "$ref": "#/definitions/model.GetEducationalProgram"
                         }
                     },
                     "400": {
@@ -527,12 +446,12 @@ const docTemplate = `{
                 "summary": "Post knowledge",
                 "parameters": [
                     {
-                        "description": "Knowledge title",
-                        "name": "knowledgeTitle",
+                        "description": "Knowledge request",
+                        "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.PostKnowledge"
                         }
                     }
                 ],
@@ -540,7 +459,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.GetKnowledgeResponse"
+                            "$ref": "#/definitions/model.GetKnowledge"
                         }
                     },
                     "400": {
@@ -548,6 +467,9 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -578,7 +500,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.GetKnowledgeResponse"
+                            "$ref": "#/definitions/model.GetKnowledge"
                         }
                     },
                     "400": {
@@ -608,21 +530,12 @@ const docTemplate = `{
                 "summary": "Post knowledge-competency connection",
                 "parameters": [
                     {
-                        "description": "Knowledge id",
-                        "name": "knowledgeId",
+                        "description": "Knowledge-competency request",
+                        "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Competency id",
-                        "name": "competencyId",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.PostKnowledgeCompetency"
                         }
                     }
                 ],
@@ -635,6 +548,9 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -654,12 +570,12 @@ const docTemplate = `{
                 "summary": "Post organization",
                 "parameters": [
                     {
-                        "description": "Organization title",
-                        "name": "organizationTitle",
+                        "description": "Organization data",
+                        "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.PostOrganization"
                         }
                     }
                 ],
@@ -667,7 +583,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.GetOrganizationResponse"
+                            "$ref": "#/definitions/model.GetOrganization"
                         }
                     },
                     "400": {
@@ -675,6 +591,9 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -705,7 +624,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.GetOrganizationResponse"
+                            "$ref": "#/definitions/model.GetOrganization"
                         }
                     },
                     "400": {
@@ -737,11 +656,14 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.PostPortfolioResponse"
+                            "$ref": "#/definitions/model.PostPortfolio"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -772,7 +694,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.GetPortfolioResponse"
+                            "$ref": "#/definitions/model.GetPortfolio"
                         }
                     },
                     "400": {
@@ -802,12 +724,12 @@ const docTemplate = `{
                 "summary": "Post profession",
                 "parameters": [
                     {
-                        "description": "Profession title",
-                        "name": "professionTitle",
+                        "description": "Profession data",
+                        "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.PostProfession"
                         }
                     }
                 ],
@@ -815,7 +737,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.GetProfessionResponse"
+                            "$ref": "#/definitions/model.GetProfession"
                         }
                     },
                     "400": {
@@ -823,6 +745,9 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -853,7 +778,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.GetProfessionResponse"
+                            "$ref": "#/definitions/model.GetProfession"
                         }
                     },
                     "400": {
@@ -883,48 +808,12 @@ const docTemplate = `{
                 "summary": "Post project",
                 "parameters": [
                     {
-                        "description": "Project title",
-                        "name": "projectTitle",
+                        "description": "Project data",
+                        "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Project description",
-                        "name": "projectDescription",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Project result",
-                        "name": "projectResult",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Project life scenario",
-                        "name": "projectLifeScenario",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Project main technology id",
-                        "name": "projectMainTechnologyId",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.PostProject"
                         }
                     }
                 ],
@@ -932,7 +821,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.PostProjectResponse"
+                            "$ref": "#/definitions/model.GetProject"
                         }
                     },
                     "400": {
@@ -940,6 +829,9 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -970,7 +862,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.GetProjectResponse"
+                            "$ref": "#/definitions/model.GetProject"
                         }
                     },
                     "400": {
@@ -1000,39 +892,12 @@ const docTemplate = `{
                 "summary": "Post project-portfolio connection",
                 "parameters": [
                     {
-                        "description": "Project id",
-                        "name": "competencyId",
+                        "description": "Personal project data",
+                        "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Portfolio id",
-                        "name": "portfolioId",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Team role id",
-                        "name": "teamRole",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "semester",
-                        "name": "semester",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.PostProjectPortfolio"
                         }
                     }
                 ],
@@ -1045,6 +910,9 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -1064,30 +932,12 @@ const docTemplate = `{
                 "summary": "Post project-portfolio-competency connection",
                 "parameters": [
                     {
-                        "description": "Project id",
-                        "name": "competencyId",
+                        "description": "Personal project competency",
+                        "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Portfolio id",
-                        "name": "portfolioId",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Competency id",
-                        "name": "competencyId",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.PostProjectPortfolioCompetency"
                         }
                     }
                 ],
@@ -1100,6 +950,9 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -1119,30 +972,12 @@ const docTemplate = `{
                 "summary": "Post student",
                 "parameters": [
                     {
-                        "description": "Student` + "`" + `s full name",
-                        "name": "studentFullName",
+                        "description": "Student` + "`" + `s data",
+                        "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Student` + "`" + `s admition date",
-                        "name": "studentAdmitionDate",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Student` + "`" + `s portfolio id",
-                        "name": "studentPortfolioId",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.PostStudent"
                         }
                     }
                 ],
@@ -1150,7 +985,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.PostStudentResponse"
+                            "$ref": "#/definitions/model.GetStudent"
                         }
                     },
                     "400": {
@@ -1158,6 +993,9 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -1188,7 +1026,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.GetStudentResponse"
+                            "$ref": "#/definitions/model.GetStudent"
                         }
                     },
                     "400": {
@@ -1218,21 +1056,12 @@ const docTemplate = `{
                 "summary": "Post student` + "`" + `s course in current semester",
                 "parameters": [
                     {
-                        "description": "Course id",
-                        "name": "courseId",
+                        "description": "Personal current student` + "`" + `s project",
+                        "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Student id",
-                        "name": "studentId",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.PostStudyGroup"
                         }
                     }
                 ],
@@ -1245,6 +1074,9 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -1264,12 +1096,12 @@ const docTemplate = `{
                 "summary": "Post technology",
                 "parameters": [
                     {
-                        "description": "Technology title",
-                        "name": "technologyTitle",
+                        "description": "Technology request",
+                        "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.PostTechnology"
                         }
                     }
                 ],
@@ -1277,7 +1109,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.GetTechnologyResponse"
+                            "$ref": "#/definitions/model.GetTechnology"
                         }
                     },
                     "400": {
@@ -1285,6 +1117,9 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -1315,7 +1150,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.GetTechnologyResponse"
+                            "$ref": "#/definitions/model.GetTechnology"
                         }
                     },
                     "400": {
@@ -1345,30 +1180,12 @@ const docTemplate = `{
                 "summary": "Post student` + "`" + `s archive course",
                 "parameters": [
                     {
-                        "description": "Student` + "`" + `s id",
-                        "name": "studentId",
+                        "description": "Trajectory` + "`" + `s data",
+                        "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Trajectory semester",
-                        "name": "trajectorySemester",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Course id",
-                        "name": "courseId",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.PostTrajectory"
                         }
                     }
                 ],
@@ -1376,7 +1193,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.PostTrajectoryResponse"
+                            "$ref": "#/definitions/model.GetTrajectory"
                         }
                     },
                     "400": {
@@ -1384,6 +1201,9 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    },
+                    "502": {
+                        "description": "Bad Gateway"
                     }
                 }
             }
@@ -1414,7 +1234,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.GetTrajectoryResponse"
+                            "$ref": "#/definitions/model.GetTrajectory"
                         }
                     },
                     "400": {
@@ -1431,369 +1251,578 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "model.GetCompetencyResponse": {
+        "model.GetCompetency": {
             "type": "object",
             "properties": {
                 "competencyId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "competencyKnowledge": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "example": [
+                        "знание 1",
+                        " знание 2..."
+                    ]
                 },
                 "competencyMainTechnology": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "competencySkills": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "навык 1, навык 2..."
                 },
                 "competencyTitle": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Название компетенции"
                 }
             }
         },
-        "model.GetCourseResponse": {
+        "model.GetCourse": {
             "type": "object",
             "properties": {
                 "courseCompetencies": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "example": [
+                        "компетенция 1",
+                        " компетенция 2..."
+                    ]
                 },
                 "courseDescription": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Описание курса"
                 },
                 "courseDiscipline": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Дисциплина, к которой отностися курс"
                 },
                 "courseId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "courseTeacher": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Преподаватель"
                 },
                 "courseTitle": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Название курса"
                 }
             }
         },
-        "model.GetDisciplineResponse": {
+        "model.GetDiscipline": {
             "type": "object",
             "properties": {
                 "disciplineDescription": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Описание дисциплины"
                 },
                 "disciplineEducationalProgram": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Образовательная программа, в которую входит цисциплина"
                 },
                 "disciplineId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "disciplineTitle": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Название дисциплины"
                 }
             }
         },
-        "model.GetEducationalProgramResponse": {
+        "model.GetEducationalProgram": {
             "type": "object",
             "properties": {
                 "educationalProgramDexcription": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Описание образовательной программы"
                 },
                 "educationalProgramId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "educationalProgramOrganization": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "организация, отвечающая за образовательную программу"
                 },
                 "educationalProgramTitle": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Название образовательной программы"
                 }
             }
         },
-        "model.GetKnowledgeResponse": {
+        "model.GetKnowledge": {
             "type": "object",
             "properties": {
                 "knowledgeId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "knowledgeTitle": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Название знания"
                 }
             }
         },
-        "model.GetOrganizationResponse": {
+        "model.GetOrganization": {
             "type": "object",
             "properties": {
                 "organizationId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "organizationTitle": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Название организации"
                 }
             }
         },
-        "model.GetPersonalProjectResponse": {
+        "model.GetPersonalProject": {
             "type": "object",
             "properties": {
                 "personalProjectCompetencies": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
-                },
-                "personalProjectDescription": {
-                    "type": "string"
-                },
-                "personalProjectId": {
-                    "type": "string"
-                },
-                "personalProjectLifeScenarion": {
-                    "type": "string"
+                    },
+                    "example": [
+                        "Компетенции участика в этом проекте"
+                    ]
                 },
                 "personalProjectMainTechnology": {
-                    "type": "string"
-                },
-                "personalProjectResult": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Основная технология проекта"
                 },
                 "personalProjectSemester": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Семестр, в котором участик работал над проектом"
                 },
                 "personalProjectTeamRole": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Роль участника в команде"
                 },
-                "personalProjectTitle": {
-                    "type": "string"
+                "projectDescription": {
+                    "type": "string",
+                    "example": "Курс направлен на изучение поведения капибар в дикой природе..."
+                },
+                "projectId": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "projectLifeScenarion": {
+                    "type": "string",
+                    "example": "Проект позволит подобрать идеальную длину шерстки для ваших капибар"
+                },
+                "projectResult": {
+                    "type": "string",
+                    "example": "Данные о зависимости длины шерстки капибар от продолжительности их жизни"
+                },
+                "projectTitle": {
+                    "type": "string",
+                    "example": "Исследование зивисимости длины шерстки капибар от продолжительности их жизни"
                 }
             }
         },
-        "model.GetPortfolioResponse": {
+        "model.GetPortfolio": {
             "type": "object",
             "properties": {
                 "portfolioId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "portfolioProjects": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.GetPersonalProjectResponse"
+                        "$ref": "#/definitions/model.GetPersonalProject"
                     }
                 }
             }
         },
-        "model.GetProfessionResponse": {
+        "model.GetProfession": {
             "type": "object",
             "properties": {
                 "professionCompetencies": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "example": [
+                        "компетенция 1",
+                        " компетенция 2..."
+                    ]
                 },
                 "professionDescription": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Описание профессии"
                 },
                 "professionId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "professionTitle": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Название профессии"
                 }
             }
         },
-        "model.GetProjectResponse": {
+        "model.GetProject": {
             "type": "object",
             "properties": {
                 "projectDescription": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Курс направлен на изучение поведения капибар в дикой природе..."
                 },
                 "projectId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "projectLifeScenarion": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Проект позволит подобрать идеальную длину шерстки для ваших капибар"
                 },
                 "projectMainTechnology": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Название технологии"
                 },
                 "projectResult": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Данные о зависимости длины шерстки капибар от продолжительности их жизни"
                 },
                 "projectTitle": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Исследование зивисимости длины шерстки капибар от продолжительности их жизни"
                 }
             }
         },
-        "model.GetStudentResponse": {
+        "model.GetStudent": {
             "type": "object",
             "properties": {
                 "studentFullName": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Фамилия Имя Отчество"
                 },
                 "studentId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "studentPortfolio": {
-                    "description": "Admition  time.Time            ` + "`" + `json:\"studentAdmitionDate\"` + "`" + `",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/model.GetPortfolioResponse"
-                        }
-                    ]
+                    "$ref": "#/definitions/model.GetPortfolio"
                 },
                 "studentSemester": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 3
                 }
             }
         },
-        "model.GetTechnologyResponse": {
+        "model.GetTechnology": {
             "type": "object",
             "properties": {
                 "technologyId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "technologyTitle": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Название технологии"
                 }
             }
         },
-        "model.GetTrajectoryResponse": {
+        "model.GetTrajectory": {
             "type": "object",
             "properties": {
                 "trajectoryCourse": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Название курса"
                 },
                 "trajectoryId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "trajectorySemester": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 3
                 },
                 "trajectoryStudent": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Фамилия Имя Отчество"
                 }
             }
         },
-        "model.PostCourseResponse": {
+        "model.PostCompetency": {
+            "type": "object",
+            "properties": {
+                "competencyMainTechnology": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "competencySkills": {
+                    "type": "string",
+                    "example": "навык 1, навык 2..."
+                },
+                "competencyTitle": {
+                    "type": "string",
+                    "example": "Название компетенции"
+                }
+            }
+        },
+        "model.PostCompetencyProfession": {
+            "type": "object",
+            "properties": {
+                "competencyId": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "professionId": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                }
+            }
+        },
+        "model.PostCourse": {
             "type": "object",
             "properties": {
                 "courseDescription": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Описание курса"
                 },
-                "courseDiscipline": {
-                    "type": "string"
-                },
-                "courseId": {
-                    "type": "string"
+                "courseDisciplineId": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "courseTeacher": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Фамилия Имя Отчество"
                 },
                 "courseTitle": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Название курса"
                 }
             }
         },
-        "model.PostDisciplineResponse": {
+        "model.PostCourseCompetency": {
+            "type": "object",
+            "properties": {
+                "competencyId": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "courseId": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                }
+            }
+        },
+        "model.PostDiscipline": {
             "type": "object",
             "properties": {
                 "disciplineDescription": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Описание дисциплины"
                 },
                 "disciplineEducationalProgramId": {
-                    "type": "string"
-                },
-                "disciplineId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "disciplineTitle": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Название дисциплины"
                 }
             }
         },
-        "model.PostEducationalProgramResponse": {
+        "model.PostEducationalProgram": {
             "type": "object",
             "properties": {
-                "educationalProgramDexcription": {
-                    "type": "string"
-                },
-                "educationalProgramId": {
-                    "type": "string"
+                "educationalProgramDescription": {
+                    "type": "string",
+                    "example": "Описание образовательной программы"
                 },
                 "educationalProgramOrganizationId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "educationalProgramTitle": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Название образовательной программы"
                 }
             }
         },
-        "model.PostPortfolioResponse": {
+        "model.PostKnowledge": {
+            "type": "object",
+            "properties": {
+                "knowledgeTitle": {
+                    "type": "string",
+                    "example": "Название знания"
+                }
+            }
+        },
+        "model.PostKnowledgeCompetency": {
+            "type": "object",
+            "properties": {
+                "competencyId": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "knowledgeId": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                }
+            }
+        },
+        "model.PostOrganization": {
+            "type": "object",
+            "properties": {
+                "organizationTitle": {
+                    "type": "string",
+                    "example": "Название организации"
+                }
+            }
+        },
+        "model.PostPortfolio": {
             "type": "object",
             "properties": {
                 "portfolioId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 }
             }
         },
-        "model.PostProjectResponse": {
+        "model.PostProfession": {
+            "type": "object",
+            "properties": {
+                "professionDescription": {
+                    "type": "string",
+                    "example": "Описание профессии"
+                },
+                "professionTitle": {
+                    "type": "string",
+                    "example": "Название профессии"
+                }
+            }
+        },
+        "model.PostProject": {
             "type": "object",
             "properties": {
                 "projectDescription": {
-                    "type": "string"
-                },
-                "projectId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Курс направлен на изучение поведения капибар в дикой природе..."
                 },
                 "projectLifeScenarion": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Проект позволит подобрать идеальную длину шерстки для ваших капибар"
                 },
                 "projectMainTechnologyId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "projectResult": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Данные о зависимости длины шерстки капибар от продолжительности их жизни"
                 },
                 "projectTitle": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Исследование зивисимости длины шерстки капибар от продолжительности их жизни"
                 }
             }
         },
-        "model.PostStudentResponse": {
+        "model.PostProjectPortfolio": {
+            "type": "object",
+            "properties": {
+                "PortfolioId": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "ProjectId": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "TeamRole": {
+                    "type": "string",
+                    "example": "Роль в команде"
+                },
+                "projectSemester": {
+                    "type": "integer",
+                    "example": 3
+                }
+            }
+        },
+        "model.PostProjectPortfolioCompetency": {
+            "type": "object",
+            "properties": {
+                "CompetencyId": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "PortfolioId": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "projectId": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                }
+            }
+        },
+        "model.PostStudent": {
             "type": "object",
             "properties": {
                 "studentAdmitionDate": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2024-01-19"
                 },
                 "studentFullName": {
-                    "type": "string"
-                },
-                "studentId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Фамилия Имя Отчество"
                 },
                 "studentPortfolioId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 }
             }
         },
-        "model.PostTrajectoryResponse": {
+        "model.PostStudyGroup": {
+            "type": "object",
+            "properties": {
+                "courseId": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "studentId": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                }
+            }
+        },
+        "model.PostTechnology": {
+            "type": "object",
+            "properties": {
+                "technologyTitle": {
+                    "type": "string",
+                    "example": "Название технологии"
+                }
+            }
+        },
+        "model.PostTrajectory": {
             "type": "object",
             "properties": {
                 "trajectoryCourseId": {
-                    "type": "string"
-                },
-                "trajectoryId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "trajectorySemester": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 3
                 },
                 "trajectoryStudentId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
                 }
             }
         }
